@@ -1,0 +1,18 @@
+@tailwind base;
+body{
+  font-family: 'Lato', sans-serif;
+}
+@tailwind components;
+.btn{
+  @apply px-4 py-2;
+}
+
+.btn-primary{
+  @apply bg-primary-dark text-white;
+}
+
+.btn-primary:hover{
+  @apply bg-teal-600;
+}
+
+@tailwind utilities;
