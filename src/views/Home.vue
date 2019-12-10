@@ -72,8 +72,7 @@
         </form>
       </div>
     </section>
-
-    <footer></footer>
+    <Footer />
   </div>
 </template>
 
@@ -81,6 +80,7 @@
 // @ is an alias to /src
 import Feature from '@/components/Homepage/Feature.vue';
 import CaseCard from '@/components/Homepage/CaseCard.vue';
+import Footer from '@/components/Shared/Footer.vue';
 export default {
   name: 'home',
   data() {
@@ -229,6 +229,7 @@ export default {
   components: {
     Feature,
     CaseCard,
+    Footer,
   },
 };
 </script>

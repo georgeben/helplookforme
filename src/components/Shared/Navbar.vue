@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="navbar fixed top-0 left-0 right-0 w-full z-10" :class="[showNavbar?'': 'navbar-hidden', lastScrollPosition > navbarHeight ? 'nav-solid': '']">
+    <nav class="navbar fixed top-0 left-0 right-0 w-full z-10" :class="[showNavbar?'': 'navbar-hidden', lastScrollPosition > navbarHeight ? 'nav-solid': '', isMobileNavOpen ? 'nav-solid': '']">
       <div class="container py-2 sm:flex sm:justify-between sm:items-center">
         <div class="flex items-center justify-between ">
           <div>
@@ -22,7 +22,7 @@
             </button>
           </div>
         </div>
-        <div class="text-sm mt-2 sm:flex" :class="isMobileNavOpen ? 'block': 'hidden'">
+        <div class="text-sm mt-2 sm:flex" :class="isMobileNavOpen ? '': 'hidden'">
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Home</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Search</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">About</a>
