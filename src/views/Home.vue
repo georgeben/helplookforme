@@ -1,18 +1,18 @@
 <template>
   <div class="home">
-    <section class="jumbotron">
+    <section class="jumbotron h-screen md:h-auto">
       <div class="container">
-        <div class="jumbotron-info mt-32 p-3 w-1/2">
-          <h1 class=" text-dark font-black my-6 leading-tight text-5xl">
+        <div class="jumbotron-info mt-2 text-left md:mt-32 p-3 w-full md:w-1/2">
+          <h1 class="text-dark font-black my-6 leading-tight text-3xl md:text-5xl">
             Report cases of missing people
           </h1>
-          <p class=" text-lg leading-relaxed mb-4">
+          <p class=" text-lg leading-relaxed mb-6">
             Get information out as quick as possible. Lorem ipsum dolor sit
             amet, consectetur adipiscing elit, sed do.
           </p>
           <div>
-            <button class="cta-btn btn btn-primary mr-4 rounded-sm shadow-lg">Report a case</button>
-            <button class=" bg-gray-300 hover:bg-gray-400 px-4 py-2">Browse cases</button>
+            <button class="btn btn-primary mr-4 rounded-sm shadow-lg my-2">Report a case</button>
+            <button class="btn bg-gray-300 hover:bg-gray-400 mr-4">Browse cases</button>
           </div>
         </div>
       </div>
@@ -237,9 +237,10 @@ section {
   padding: 50px 0;
 }
 .jumbotron {
-  background-image: url('../assets/images/landing.png');
+  background-image: url('../assets/images/landing_images/landing.png');
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .scrolling-wrapper{
@@ -251,5 +252,20 @@ section {
 
 .newsletter{
   background: linear-gradient(97.06deg, rgba(89, 215, 182, 0.9) 28.21%, rgba(102, 195, 204, 0.9) 96.06%);
+}
+
+@media only screen and (max-width: 540px) {
+.jumbotron{
+  background-image: url('../assets/images/landing_images/mobile_landing.png');
+}
+}
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 1) {
+    .jumbotron{
+      background-image: url('../assets/images/landing_images/tablet_landing.png');
+    }
 }
 </style>
