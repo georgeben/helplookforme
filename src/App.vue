@@ -4,17 +4,17 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <!-- <Navbar /> -->
+    <Navbar />
     <router-view/>
   </div>
 </template>
 
 <script>
-// import Navbar from '@/components/Shared/Navbar.vue';
+import Navbar from '@/components/Shared/Navbar.vue';
 export default {
   name: 'app',
   components: {
-    // Navbar,
+    Navbar,
   }
 }
 </script>

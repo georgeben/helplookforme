@@ -15,4 +15,8 @@ body{
   @apply bg-teal-600;
 }
 
+.navbar.nav-solid {
+  @apply bg-white shadow-lg;
+}
+
 @tailwind utilities;

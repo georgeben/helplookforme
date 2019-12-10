@@ -33,6 +33,7 @@
       class="featured-cases"
     >
       <div class="container scrolling-wrapper p-8 bg-light-green">
+        <!-- TODO: Fix word wrap issue in case description -->
         <CaseCard
           v-for="featuredCase in featuredCases"
           :key="featuredCase.slug"
