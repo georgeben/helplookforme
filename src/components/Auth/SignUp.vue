@@ -1,32 +1,58 @@
 <template>
+<!-- FIXME The height of this section is set to the height of the screen hence it pushes the footer down -->
   <section class="w-full h-screen bg-gray-100">
     <div class="container">
-      <form class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-2/3 sm:mx-auto px-4 py-6">
+      <div class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-2/3 md:w-1/2 sm:mx-auto px-4 py-6">
         <div>
-          <h1 class="text-center text-xl font-semibold pb-6">Sign Up</h1>
-          <p class=" text-gray-600 text-justify w-4/5 mx-auto">
+          <div class="flex w-11/12 mx-auto">
+            <svg class="inline-block pt-2 cursor-pointer" v-if="showEmailFields" @click="showEmailFields = false" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M15.45 17.97L9.5 12.01a.25.25 0 0 1 0-.36l5.87-5.87a.75.75 0 0 0-1.06-1.06l-5.87 5.87c-.69.68-.69 1.8 0 2.48l5.96 5.96a.75.75 0 0 0 1.06-1.06z"></path></svg>
+            <h1 class="text-center text-xl font-semibold pb-6 mx-auto">Sign Up</h1>
+
+          </div>
+          <p class=" text-gray-600 text-justify w-11/12 mx-auto">
             Create an account to report a case about a missing person. It only
             takes about five minutes.
           </p>
         </div>
 
-        <div class="button-group mt-10 text-center">
-          <button class="w-4/5 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
+        <form v-if="showEmailFields" >
+          <div class="w-11/12 mx-auto mt-10">
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                Username
+              </label>
+              <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email">
+            </div>
+            <div class="mb-6">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                Password
+              </label>
+              <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password">
+              <p class="text-red-500 text-xs italic" v-if="errorMessage">Please choose a password.</p>
+            </div>
+            <button class="btn btn-primary">Sign up</button>          
+          </div>
+        </form>
+
+        <div class="button-group mt-10 text-center" v-else>
+          <button class=" w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
             <svg class=" h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3"><path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/><path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/><path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"/><path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"/></svg>
             <span class="text-gray-600 mx-auto">Sign up with Google</span>
           </button>
 
-          <button class="w-4/5 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
+          <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.73 455.73"><path d="M0 0v455.73h242.704V279.691h-59.33v-71.864h59.33v-60.353c0-43.893 35.582-79.475 79.475-79.475h62.025v64.622h-44.382c-13.947 0-25.254 11.307-25.254 25.254v49.953h68.521l-9.47 71.864h-59.051V455.73H455.73V0H0z" fill="#3a559f"/></svg>
             <span class="text-gray-600 mx-auto">Sign up with Facebook</span>
           </button>
 
-          <button class="w-4/5 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
+          <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 97.248c-19.04 8.352-39.328 13.888-60.48 16.576 21.76-12.992 38.368-33.408 46.176-58.016-20.288 12.096-42.688 20.64-66.56 25.408C411.872 60.704 384.416 48 354.464 48c-58.112 0-104.896 47.168-104.896 104.992 0 8.32.704 16.32 2.432 23.936-87.264-4.256-164.48-46.08-216.352-109.792-9.056 15.712-14.368 33.696-14.368 53.056 0 36.352 18.72 68.576 46.624 87.232-16.864-.32-33.408-5.216-47.424-12.928v1.152c0 51.008 36.384 93.376 84.096 103.136-8.544 2.336-17.856 3.456-27.52 3.456-6.72 0-13.504-.384-19.872-1.792 13.6 41.568 52.192 72.128 98.08 73.12-35.712 27.936-81.056 44.768-130.144 44.768-8.608 0-16.864-.384-25.12-1.44C46.496 446.88 101.6 464 161.024 464c193.152 0 298.752-160 298.752-298.688 0-4.64-.16-9.12-.384-13.568 20.832-14.784 38.336-33.248 52.608-54.496z" fill="#03a9f4"/></svg>
             <span class="text-gray-600 mx-auto">Sign up with Twitter</span>
           </button>
 
-          <button class="w-4/5 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
+          <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center"
+            @click="showEmailFields = true"
+          >
             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 483.3 483.3" style="enable-background:new 0 0 483.3 483.3;" xml:space="preserve" width="512px" height="512px"><g><g>
               <g>
                 <path d="M424.3,57.75H59.1c-32.6,0-59.1,26.5-59.1,59.1v249.6c0,32.6,26.5,59.1,59.1,59.1h365.1c32.6,0,59.1-26.5,59.1-59.1    v-249.5C483.4,84.35,456.9,57.75,424.3,57.75z M456.4,366.45c0,17.7-14.4,32.1-32.1,32.1H59.1c-17.7,0-32.1-14.4-32.1-32.1v-249.5    c0-17.7,14.4-32.1,32.1-32.1h365.1c17.7,0,32.1,14.4,32.1,32.1v249.5H456.4z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#666565"/>
@@ -37,14 +63,22 @@
             <span class="text-gray-600 mx-auto">Sign up with Email</span>
           </button>
         </div>
-        <p class="text-gray-600 mt-4 w-4/5 mx-auto">Already have an account? <router-link class="text-primary-dark" to="login">Log in</router-link> </p>
-      </form>
+        <p class="text-gray-600 mt-4 w-11/12 mx-auto text-sm">Already have an account? <router-link class="text-primary-dark" to="login">Log in</router-link> </p>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'signup',
+  data(){
+    return {
+      showEmailFields: false,
+      errorMessage: '',
+    }
+  }
+};
 </script>
 
 <style></style>
