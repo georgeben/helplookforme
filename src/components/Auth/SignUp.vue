@@ -1,6 +1,6 @@
 <template>
 <!-- FIXME The height of this section is set to the height of the screen hence it pushes the footer down -->
-  <section class="w-full h-screen bg-gray-100">
+  <section class="w-full bg-gray-100">
     <div class="container">
       <div class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-2/3 md:w-1/2 sm:mx-auto px-4 py-6">
         <div>
@@ -18,8 +18,8 @@
         <form v-if="showEmailFields" >
           <div class="w-11/12 mx-auto mt-10">
             <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                Username
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                Email
               </label>
               <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email">
             </div>
