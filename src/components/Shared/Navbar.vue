@@ -4,7 +4,9 @@
       <div class="container py-2 sm:flex sm:justify-between sm:items-center">
         <div class="flex items-center justify-between ">
           <div>
-            <img class="h-5 px-2" src="../../assets/images/logo.png" alt="Logo" />
+            <router-link to="/">
+              <img class="h-5 px-2" src="../../assets/images/logo.png" alt="Logo" />
+            </router-link>
           </div>
           <div>
             <button
@@ -23,7 +25,7 @@
           </div>
         </div>
         <div class="text-sm mt-2 sm:flex" :class="isMobileNavOpen ? '': 'hidden'">
-          <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Home</a>
+          <router-link to="/" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Home</router-link>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Search</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">About</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Support</a>
@@ -40,7 +42,7 @@ export default {
   data(){
     return {
       isMobileNavOpen: false,
-      showNavbar: false,
+      showNavbar: true,
       lastScrollPosition: 0,
       navbarHeight: 61,
     }
