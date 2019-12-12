@@ -330,6 +330,11 @@ export default {
       if (this.formNumber < 4) {
         this.formNumber += 1;
         this.progressValue += 25;
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
       }
     },
     decrementFormNumber() {
@@ -337,6 +342,11 @@ export default {
         this.formNumber -= 1;
         this.progressValue -= 25;
       }
+      window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
     },
     submitForm() {
       console.log('Finish!');
