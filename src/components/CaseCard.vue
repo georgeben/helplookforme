@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white rounded-lg overflow-hidden shadow-md w-3/4 md:w-30 mx-5 mt-5 inline-block">
-    <div class="bg-red-500 pb-2/3 relative">
+  <div class="bg-white overflow-hidden shadow-lg md:w-30 mt-5 inline-block" :class="[page === 'search' ? 'w-full sm:w-47 sm:mx-2 mx-0 md:mx-2':'w-3/4 mx-5']">
+    <div class="pb-2/3 relative">
       <img
         class="h-full w-full object-cover absolute"
         :src="caseData.photoURL"
@@ -16,7 +16,7 @@
           <p>Age: {{ caseData.age }}</p>
           <p>Last Seen: {{ new Date(caseData.dateLastSeen).toDateString() }}</p>
         </div>
-        <p class="mt-2">{{ caseData.description }}</p>
+        <p class="mt-2 case-description">{{ caseData.description }}</p>
       </div>
     </div>
   </div>
@@ -24,8 +24,24 @@
 
 <script>
 export default {
-  props: ['caseData'],
+  props: ['caseData', 'page'],
 };
 </script>
 
-<style></style>
+<style>
+.case-description{
+  --max-lines: 3;
+  --line-height: 1.5rem;
+  max-height: calc(var(--line-height) * var(--max-lines));
+  overflow: hidden;
+  position: relative;
+}
+
+/* .case-description::before {
+  content: "...";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+} */
+
+</style>

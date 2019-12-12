@@ -12,7 +12,9 @@
           </p>
           <div>
             <button class="btn btn-primary mr-4 rounded-sm shadow-lg my-2">Report a case</button>
-            <button class="btn bg-gray-300 hover:bg-gray-400 mr-4">Browse cases</button>
+            <button class="btn bg-gray-200 hover:bg-gray-400 mr-4">
+              <router-link to="/cases">Browse cases</router-link>
+            </button>
           </div>
         </div>
       </div>
@@ -78,7 +80,7 @@
 <script>
 // @ is an alias to /src
 import Feature from '@/components/Homepage/Feature.vue';
-import CaseCard from '@/components/Homepage/CaseCard.vue';
+import CaseCard from '@/components/CaseCard.vue';
 export default {
   name: 'home',
   data() {
