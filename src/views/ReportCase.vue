@@ -14,11 +14,14 @@
             :value="progressValue"
           ></progress>
 
+          <!-- Form 1 - Physical information -->
           <form v-if="formNumber === 1">
             <div class="mt-4">
               <div class="mb-6">
                 <p class=" text-lg leading-relaxed">Personal Information</p>
-                <p class="text-gray-600 text-sm">Tell us about the person who is missing</p>
+                <p class="text-gray-600 text-sm">
+                  Tell us about the person who is missing
+                </p>
               </div>
               <div class="sm:flex sm:justify-between">
                 <div class="mb-4 sm:w-47">
@@ -84,7 +87,6 @@
               </div>
 
               <div class="sm:flex sm:justify-between">
-                <!-- TODO This should be an autocomplete select box -->
                 <div class="mb-4 sm:w-47">
                   <label
                     class="block text-gray-700 text-sm font-bold mb-2"
@@ -106,7 +108,10 @@
                   >
                     Gender
                   </label>
-                  <select id="gender" class="border border-gray-400 px-3 py-2 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <select
+                    id="gender"
+                    class="border border-gray-400 px-3 py-2 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
                     <option value="MALE">Male</option>
                     <option value="FEMALE">Female</option>
                     <option value="OTHER">Other</option>
@@ -119,7 +124,6 @@
                   /> -->
                 </div>
               </div>
-
             </div>
           </form>
 
@@ -127,7 +131,9 @@
             <div class="mt-4">
               <div class="mb-6">
                 <p class=" text-lg leading-relaxed">Physical characteristics</p>
-                <p class="text-gray-600 text-sm">Information about how the person looks like</p>
+                <p class="text-gray-600 text-sm">
+                  Information about how the person looks like
+                </p>
               </div>
               <div class="sm:flex sm:justify-between">
                 <div class="mb-4 sm:w-47">
@@ -160,7 +166,6 @@
               </div>
 
               <div class="sm:flex sm:justify-between">
-                <!-- TODO This should be an autocomplete select box -->
                 <div class="mb-4 sm:w-47">
                   <label
                     class="block text-gray-700 text-sm font-bold mb-2"
@@ -193,14 +198,117 @@
                   ></textarea>
                 </div>
               </div>
+            </div>
+          </form>
 
+          <form v-if="formNumber === 3">
+            <div class="mt-4">
+              <div class="mb-6">
+                <p class=" text-lg leading-relaxed">Event description</p>
+                <p class="text-gray-600 text-sm">
+                  Information about how the person got missing
+                </p>
+              </div>
+              <div class="sm:flex sm:justify-between">
+                <div class="mb-4 sm:w-47">
+                  <label
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    for="addressLastSeen"
+                  >
+                    Address last seen
+                  </label>
+                  <!-- TODO This should use an autocomplete form with Google places API -->
+                  <input
+                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="addressLastSeen"
+                    type="text"
+                  />
+                </div>
+                <div class="mb-4 sm:w-47">
+                  <label
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    for="state"
+                  >
+                    State
+                  </label>
+                  <!-- TODO This should use an autocomplete form with Google places API -->
+                  <input
+                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="state"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              <div class="sm:flex sm:justify-between">
+                <div class="mb-4 sm:w-47">
+                  <label
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    for="country"
+                  >
+                    Country
+                  </label>
+                  <!-- TODO This should use an autocomplete form with Google places API -->
+                  <input
+                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="country"
+                    type="text"
+                  />
+                </div>
+                <div class="mb-4 sm:w-47">
+                  <label
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    for="dateLastSeen"
+                  >
+                    Date last seen
+                  </label>
+                  <!-- TODO This should use an autocomplete form with Google places API -->
+                  <input
+                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="dateLastSeen"
+                    type="date"
+                  />
+                </div>
+              </div>
+              <div class="mb-4 sm:w-47">
+                  <label
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    for="cloths"
+                  >
+                    Cloths worn by the missing person (optional)
+                  </label>
+                  <textarea
+                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="cloths"
+                    type="text"
+                    rows="2"
+                    placeholder="E.g orange dress with black hoodie"
+                  ></textarea>
+                </div>
             </div>
           </form>
           <div class="flex justify-between mt-10">
-            <button class="btn btn-primary" v-if="formNumber - 1 > 0" @click="decrementFormNumber">Back</button>
-            <button class="btn btn-primary ml-auto" v-if="formNumber < 4" @click="incrementFormNumber">Next</button>
-            <button class="btn btn-primary ml-auto" @click="submitForm" v-if="formNumber === 4">Finish</button>
-
+            <button
+              class="btn btn-primary"
+              v-if="formNumber - 1 > 0"
+              @click="decrementFormNumber"
+            >
+              Back
+            </button>
+            <button
+              class="btn btn-primary ml-auto"
+              v-if="formNumber < 4"
+              @click="incrementFormNumber"
+            >
+              Next
+            </button>
+            <button
+              class="btn btn-primary ml-auto"
+              @click="submitForm"
+              v-if="formNumber === 4"
+            >
+              Finish
+            </button>
           </div>
         </div>
       </div>
@@ -218,22 +326,22 @@ export default {
     };
   },
   methods: {
-    incrementFormNumber(){
-      if(this.formNumber < 4){
-        this.formNumber+=1;
-        this.progressValue+=25;
+    incrementFormNumber() {
+      if (this.formNumber < 4) {
+        this.formNumber += 1;
+        this.progressValue += 25;
       }
     },
-    decrementFormNumber(){
-      if(this.formNumber > 1){
-        this.formNumber-=1;
-        this.progressValue-=25;
+    decrementFormNumber() {
+      if (this.formNumber > 1) {
+        this.formNumber -= 1;
+        this.progressValue -= 25;
       }
     },
-    submitForm(){
-      console.log('Finish!')
-    }
-  }
+    submitForm() {
+      console.log('Finish!');
+    },
+  },
 };
 </script>
 
