@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Auth from '../views/Auth.vue'
 import ReportCase from '../views/ReportCase'
+import BrowseCases from '../views/BrowseCases'
+import ViewCases from '../views/ViewCase'
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 
@@ -45,6 +47,14 @@ const routes = [
     path: '/report-case',
     component: ReportCase,
   },
+  {
+    path: '/cases',
+    component: BrowseCases,
+  },
+  {
+    path: '/cases/:slug',
+    component: ViewCases
+  }
 ];
 
 const router = new VueRouter({

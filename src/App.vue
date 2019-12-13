@@ -1,9 +1,5 @@
 <template>
-  <div id="app" class="app antialiased text-gray-900">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
+  <div id="app" class="app antialiased text-gray-800">
     <Navbar />
     <router-view/>
     <Footer />
@@ -25,6 +21,6 @@ export default {
 <style>
 .container{
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
 }
 </style>
