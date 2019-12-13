@@ -310,14 +310,14 @@
 
           <div class="flex justify-between mt-10">
             <button
-              class="btn btn-primary"
+              class="btn bg-gray-200 hover:bg-gray-300"
               v-if="formNumber - 1 > 0"
               @click="decrementFormNumber"
             >
               Back
             </button>
             <button
-              class="btn btn-primary ml-auto"
+              class="btn bg-gray-200 hover:bg-gray-300 ml-auto"
               v-if="formNumber < 4"
               @click="incrementFormNumber"
             >
@@ -328,7 +328,7 @@
               @click="submitForm"
               v-if="formNumber === 4"
             >
-              Finish
+              Submit report
             </button>
           </div>
         </div>
