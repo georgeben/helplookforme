@@ -29,6 +29,7 @@
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Search</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">About</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Support</a>
+          <a href="/profile" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">My profile</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Contact</a>
         </div>
       </div>
