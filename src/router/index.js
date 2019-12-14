@@ -10,6 +10,7 @@ import ReportedCases from '../views/ReportedCases'
 import EditCase from '../views/EditCase';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
+import ForgotPassword from '@/components/Auth/ForgotPassword.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,10 @@ const routes = [
         path: 'signup',
         component: Signup,
       },
+      {
+        path: 'forgot-password',
+        component: ForgotPassword,
+      },
     ],
   },
   {
@@ -68,8 +73,8 @@ const routes = [
   },
   {
     path: '/edit/:caseSlug',
-    component: EditCase
-  }
+    component: EditCase,
+  },
 ];
 
 const router = new VueRouter({

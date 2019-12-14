@@ -22,7 +22,7 @@
               <p class="text-red-500 text-xs italic" v-if="errorMessage">Please choose a password.</p>
             </div>
             <button class="btn btn-primary">Log in</button>       
-            <router-link class="text-primary-dark ml-6 text-sm" to="/forgot-password">Forgot password?</router-link>
+            <router-link class="text-primary-dark ml-6 text-sm" to="forgot-password">Forgot password?</router-link>
           </div>
         </form>
 
