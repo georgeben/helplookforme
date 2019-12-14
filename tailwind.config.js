@@ -7,6 +7,9 @@ module.exports = {
         'light-green': '#F4F8FC',
         'primary-dark': '#308894',
       },
+      opacity: {
+        5: '5%'
+      },
       spacing: {
         '1/2': '50%',
         '1/3': '33.333333%',

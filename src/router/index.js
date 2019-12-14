@@ -6,6 +6,7 @@ import ReportCase from '../views/ReportCase'
 import BrowseCases from '../views/BrowseCases'
 import ViewCases from '../views/ViewCase'
 import UserProfile from '../views/UserProfile'
+import ReportedCases from '../views/ReportedCases'
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 
@@ -59,6 +60,10 @@ const routes = [
   {
     path: '/profile',
     component: UserProfile,
+  },
+  {
+    path: '/reported-cases',
+    component: ReportedCases,
   },
 ];
 
