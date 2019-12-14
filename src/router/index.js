@@ -5,6 +5,9 @@ import Auth from '../views/Auth.vue'
 import ReportCase from '../views/ReportCase'
 import BrowseCases from '../views/BrowseCases'
 import ViewCases from '../views/ViewCase'
+import UserProfile from '../views/UserProfile'
+import ReportedCases from '../views/ReportedCases'
+import EditCase from '../views/EditCase';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 
@@ -53,7 +56,19 @@ const routes = [
   },
   {
     path: '/cases/:slug',
-    component: ViewCases
+    component: ViewCases,
+  },
+  {
+    path: '/profile',
+    component: UserProfile,
+  },
+  {
+    path: '/reported-cases',
+    component: ReportedCases,
+  },
+  {
+    path: '/edit/:caseSlug',
+    component: EditCase
   }
 ];
 

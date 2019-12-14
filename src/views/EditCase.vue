@@ -5,9 +5,16 @@
         class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-11/12 md:w-5/6 sm:mx-auto px-4 py-6"
       >
         <div class="w-11/12 mx-auto">
-          <h1 class="text-center text-xl font-semibold pb-6 mx-auto">
-            Report a case
-          </h1>
+          <div class="flex items-center mb-6">
+            <router-link to="/reported-cases">
+              <svg class="inline-block cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M15.45 17.97L9.5 12.01a.25.25 0 0 1 0-.36l5.87-5.87a.75.75 0 0 0-1.06-1.06l-5.87 5.87c-.69.68-.69 1.8 0 2.48l5.96 5.96a.75.75 0 0 0 1.06-1.06z"></path></svg>
+              <span class="text-sm">Cancel</span>
+            </router-link>
+            <h1 class="text-center text-xl font-semibold mx-auto">
+              Edit a case
+            </h1>
+          </div>
+
           <progress
             class="w-full h-2"
             max="100"
@@ -339,7 +346,7 @@
 
 <script>
 export default {
-  name: 'report-case',
+  name: 'edit-case',
   data() {
     return {
       formNumber: 1,
@@ -402,6 +409,9 @@ export default {
       console.log('Finish!');
     },
   },
+  mounted(){
+    // load the case from the API
+  }
 };
 </script>
 
