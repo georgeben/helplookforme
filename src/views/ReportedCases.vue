@@ -9,7 +9,7 @@
                 {{ item.fullname }}
               </h1>
 
-              <OptionsDropdown class="lg:hidden" />
+              <OptionsDropdown class="lg:hidden" :slug="item.slug" />
             </div>
             <img
               class="h-48 w-full object-contain mb-4"
@@ -143,7 +143,7 @@
             </span>
           </p>
         </div>
-        <OptionsDropdown class="hidden lg:block" />
+        <OptionsDropdown class="hidden lg:block" :slug="item.slug" />
       </div>
     </div>
     <div class="container mt-20">

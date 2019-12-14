@@ -43,8 +43,8 @@
       </svg>
     </button>
     <button v-if="isOpen" @click="isOpen = false" class="fixed inset-0 w-full h-full bg-black opacity-5 cursor-default" tabindex="-1"></button>
-    <div class="bg-white py-2 absolute right-0 shadow-lg w-32" v-if="isOpen">
-      <button class="block px-3 hover:text-gray-600 mx-auto my-2">Edit Case</button>
+    <div class="bg-white py-2 absolute right-0 shadow-lg w-32 text-center" v-if="isOpen">
+      <router-link :to="`edit/${slug}`" class="block px-3 hover:text-gray-600 mx-auto my-2">Edit Case</router-link>
       <button class="block px-3 hover:text-red-500 mx-auto my-2 text-red-600">
         Close Case
       </button>
@@ -55,6 +55,7 @@
 <script>
 export default {
   name: 'options-dropdown',
+  props:['slug'],
   data(){
     return {
       isOpen: false,
