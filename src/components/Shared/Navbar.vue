@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav class="navbar fixed top-0 left-0 right-0 w-full z-10" :class="[showNavbar?'': 'navbar-hidden', lastScrollPosition > navbarHeight ? 'nav-solid': '', isMobileNavOpen ? 'nav-solid': '']">
-      <div class="container py-2 sm:flex sm:justify-between sm:items-center">
+      <div class="container py-2 md:flex md:justify-between md:items-center">
         <div class="flex items-center justify-between ">
           <div>
             <router-link to="/">
@@ -11,7 +11,7 @@
           <div>
             <button
               type="button"
-              class="block text-dark px-2 hover:text-dark-100 focus:text-dark-100 sm:hidden"
+              class="block text-dark px-2 hover:text-dark-100 focus:text-dark-100 md:hidden"
               @click="isMobileNavOpen = !isMobileNavOpen"
             >
               <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
@@ -24,13 +24,14 @@
             </button>
           </div>
         </div>
-        <div class="text-sm mt-2 sm:flex" :class="isMobileNavOpen ? '': 'hidden'">
-          <router-link to="/" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Home</router-link>
-          <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Search</a>
-          <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">About</a>
-          <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Support</a>
-          <a href="/profile" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">My profile</a>
-          <a href="#" class="block p-2 rounded-sm hover:bg-light-green sm:ml-3">Contact</a>
+        <div class="text-sm mt-2 md:flex" :class="isMobileNavOpen ? '': 'hidden'">
+          <router-link to="/" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Home</router-link>
+          <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Search</a>
+          <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">About</a>
+          <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Support</a>
+          <a href="/profile" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">My profile</a>
+          <a href="/reported-cases" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">My Reported cases</a>
+          <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Contact</a>
         </div>
       </div>
     </nav>
