@@ -39,6 +39,13 @@ const actions = {
     // Store the token
     storage.updateState(constants.TOKEN, result.data.data.token);
     console.log({result})
+  },
+  async logout({ commit }){
+    commit('setUser', null);
+    commit('updateLoggedInStatus', false);
+    // Remove token
+    storage.removeState(constants.TOKEN)
+
   }
 }
 

@@ -9,6 +9,10 @@ function updateState(key, data) {
   return savedData;
 }
 
+function removeState(key) {
+  localStorage.removeItem(key)
+}
+
 function clearStorage() {
   localStorage.clear();
 }
@@ -17,4 +21,5 @@ export default {
   clearStorage,
   updateState,
   loadState,
+  removeState,
 };

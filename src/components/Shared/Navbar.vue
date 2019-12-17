@@ -27,11 +27,12 @@
         <div class="text-sm mt-2 md:flex" :class="isMobileNavOpen ? '': 'hidden'">
           <router-link to="/" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Home</router-link>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Search</a>
-          <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">About</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Support</a>
           <a href="/profile" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">My profile</a>
           <a href="/reported-cases" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">My Reported cases</a>
           <a href="#" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Contact</a>
+          <a href="#" class="block p-2 rounded-sm text-red-500 hover:text-red-400 md:ml-3" v-if="isLoggedIn" @click="logUserOut">Log out</a>
+
         </div>
       </div>
     </nav>
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'navbar',
   data(){
@@ -56,6 +58,7 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
+    ...mapActions('Auth', ['logout']),
     handleScroll(){
       const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
       if(currentScrollPosition < 0){
@@ -64,7 +67,14 @@ export default {
       }
       this.showNavbar = currentScrollPosition < this.lastScrollPosition;
       this.lastScrollPosition = currentScrollPosition;
+    },
+    async logUserOut(){
+      await this.logout();
+      this.$router.push('/')
     }
+  },
+  computed: {
+    ...mapState('Auth', ['isLoggedIn'])
   }
 };
 </script>
