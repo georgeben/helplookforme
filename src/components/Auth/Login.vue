@@ -76,7 +76,10 @@ export default {
         return;
       }
       await this.localLogIn(this.user)
-      this.$router.push('/')
+      if(!this.$route.query.redirect){
+        this.$router.push('/')
+      }
+      this.$router.push(this.$route.query.redirect)
     }
   }
 }

@@ -11,6 +11,7 @@ import EditCase from '../views/EditCase';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 import ForgotPassword from '@/components/Auth/ForgotPassword.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -50,10 +51,16 @@ const routes = [
         component: ForgotPassword,
       },
     ],
+    meta: {
+      guest: true,
+    },
   },
   {
     path: '/report-case',
     component: ReportCase,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/cases',
@@ -66,14 +73,23 @@ const routes = [
   {
     path: '/profile',
     component: UserProfile,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/reported-cases',
     component: ReportedCases,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/edit/:caseSlug',
     component: EditCase,
+    meta: {
+      requiresAuth: true,
+    },
   },
 ];
 
@@ -81,6 +97,26 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('Matched routes', to.matched)
+  let loggedIn = store.getters['Auth/getLoginStatus'];
+  console.log({loggedIn})
+  if (loggedIn && to.matched.some(record => record.meta.guest)) {
+    next({
+      path: '/'
+    })
+  }
+  if (!loggedIn && to.matched.some(record => record.meta.requiresAuth)) {
+    next({
+      path: '/auth/login',
+      query: {
+        redirect: to.fullPath
+      }
+    })
+  }
+  next()
 })
 
 export default router

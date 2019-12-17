@@ -1,4 +1,6 @@
 import { authAPI } from '@/api';
+import { storage } from '../../utils';
+import constants from '../../constants'
 
 const state = {
   isLoggedIn: false,
@@ -35,7 +37,17 @@ const actions = {
     commit('updateLoggedInStatus', true);
 
     // Store the token
+    storage.updateState(constants.TOKEN, result.data.data.token);
     console.log({result})
+  }
+}
+
+const getters = {
+  getCurrentUser(state) {
+    return state.currentUser;
+  },
+  getLoginStatus(state) {
+    return state.isLoggedIn;
   }
 }
 
@@ -43,5 +55,6 @@ export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 }
