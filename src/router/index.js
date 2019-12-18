@@ -100,9 +100,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('Matched routes', to.matched)
   let loggedIn = store.getters['Auth/getLoginStatus'];
-  console.log({loggedIn})
   if (loggedIn && to.matched.some(record => record.meta.guest)) {
     next({
       path: '/'

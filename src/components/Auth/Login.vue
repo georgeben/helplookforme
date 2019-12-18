@@ -75,11 +75,14 @@ export default {
         alert('Fuck off');
         return;
       }
-      await this.localLogIn(this.user)
-      if(!this.$route.query.redirect){
-        this.$router.push('/')
+      let success = await this.localLogIn(this.user);
+      if(success){
+        console.log('Is this being called')
+        if(!this.$route.query.redirect){
+          this.$router.push('/')
+        }
+        this.$router.push(this.$route.query.redirect)
       }
-      this.$router.push(this.$route.query.redirect)
     }
   }
 }

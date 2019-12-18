@@ -1,11 +1,13 @@
 import { authAPI } from '@/api';
-import { storage } from '../../utils';
+import { storage, handleError } from '../../utils';
 import constants from '../../constants'
 
-const state = {
+
+const initialState = () => ({
   isLoggedIn: false,
   currentUser: null,
-}
+});
+const state = initialState();
 
 const mutations = {
   setUser(state, payload) {
@@ -13,6 +15,12 @@ const mutations = {
   },
   updateLoggedInStatus(state, isLoggedIn) {
     state.isLoggedIn = isLoggedIn;
+  },
+  resetState(state) {
+    const newState = initialState();
+    Object.keys(newState).forEach(key => {
+      state[key] = newState[key];
+    });
   }
 }
 
@@ -29,20 +37,24 @@ const actions = {
     }
   },
   async localLogIn({ commit }, payload) {
-    // Call the login API endpoint
-    let result = await authAPI.localLogIn(payload);
-
-    // Update the store state to store the current user profile
-    commit('setUser', result.data.data.user)
-    commit('updateLoggedInStatus', true);
-
-    // Store the token
-    storage.updateState(constants.TOKEN, result.data.data.token);
-    console.log({result})
+    try {
+      // Call the login API endpoint
+      let result = await authAPI.localLogIn(payload);
+  
+      // Update the store state to store the current user profile
+      commit('setUser', result.data.data.user)
+      commit('updateLoggedInStatus', true);
+  
+      // Store the token
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      return true
+    } catch (error) {
+      return handleError(error)
+    }
   },
   async logout({ commit }){
-    commit('setUser', null);
-    commit('updateLoggedInStatus', false);
+    commit('resetState');
+    
     // Remove token
     storage.removeState(constants.TOKEN)
 
