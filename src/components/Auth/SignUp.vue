@@ -2,14 +2,23 @@
 <!-- FIXME The height of this section is set to the height of the screen hence it pushes the footer down -->
   <section class="w-full bg-gray-100">
     <div class="container">
-      <div class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-2/3 md:w-1/2 sm:mx-auto px-4 py-6">
+      <div v-if="showConfirmEmail" class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-2/3 md:w-1/2 sm:mx-auto px-4 py-6">
+          <h1 class="text-center text-xl font-semibold pb-6 mx-auto">Confirm email</h1>
+          <div class="w-11/12 mx-auto">
+            <p class="text-gray-600 text-justify mb-6">Your account has been successfully created. A confirmation
+            email has been sent to the email {{user.email}}. Please check your email inbox to confirm
+            your email. Thank you</p>            
+            <button class="btn btn-primary" type="button" @click="finishSignUp">Continue</button>          
+          </div>
+      </div>
+      <div v-else class="bg-white shadow-lg mt-1/3 sm:mt-1/4 md:mt-40 sm:w-2/3 md:w-1/2 sm:mx-auto px-4 py-6">
         <div>
           <div class="flex w-11/12 mx-auto">
             <svg class="inline-block pt-2 cursor-pointer" v-if="showEmailFields" @click="showEmailFields = false" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M15.45 17.97L9.5 12.01a.25.25 0 0 1 0-.36l5.87-5.87a.75.75 0 0 0-1.06-1.06l-5.87 5.87c-.69.68-.69 1.8 0 2.48l5.96 5.96a.75.75 0 0 0 1.06-1.06z"></path></svg>
             <h1 class="text-center text-xl font-semibold pb-6 mx-auto">Sign Up</h1>
 
           </div>
-          <p class=" text-gray-600 text-justify w-11/12 mx-auto">
+          <p class="text-gray-600 text-justify w-11/12 mx-auto">
             Create an account to report a case about a missing person. It only
             takes about five minutes.
           </p>
@@ -18,19 +27,25 @@
         <form v-if="showEmailFields" >
           <div class="w-11/12 mx-auto mt-10">
             <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="fullname">
+                Fullname
+              </label>
+              <input v-model="user.fullname" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Firstname lastname">
+            </div>
+            <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                 Email
               </label>
-              <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email">
+              <input v-model="user.email" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email">
             </div>
             <div class="mb-6">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                 Password
               </label>
-              <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password">
+              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password">
               <p class="text-red-500 text-xs italic" v-if="errorMessage">Please choose a password.</p>
             </div>
-            <button class="btn btn-primary">Sign up</button>          
+            <button class="btn btn-primary" type="button" @click="signUserUp">Sign up</button>          
           </div>
         </form>
 
@@ -70,12 +85,40 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'signup',
   data(){
     return {
+      user: {
+        fullname: '',
+        email: '',
+        password: '',
+      },
       showEmailFields: false,
       errorMessage: '',
+      showConfirmEmail: false,
+    }
+  },
+  methods: {
+    ...mapActions('Auth', ['signUp']),
+    async signUserUp(){
+      let result = await this.signUp(this.user)
+      console.log({result});
+      // If result is true, check if the newly signed up user has an email address
+      if(result){
+        console.log('Boom')
+        if(result.email){
+          console.log('Chala')
+          // If there is an email address, inform the user that a confirmation email has been sent
+          this.showConfirmEmail = true
+        } else {
+          return this.$router.push('/profile')
+        }
+      }
+    },
+    finishSignUp(){
+      return this.$router.push('/profile')
     }
   }
 };

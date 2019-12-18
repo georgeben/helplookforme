@@ -52,6 +52,21 @@ const actions = {
       return handleError(error)
     }
   },
+  async signUp({ commit }, payload) {
+    try {
+      let result = await authAPI.signUp(payload);
+      commit('setUser', result.data.data.user);
+      commit('updateLoggedInStatus', true);
+
+      // Store the token
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      return result.data.data.user;
+    } catch (error) {
+      console.log('Did this run')
+      return handleError(error);
+    }
+    
+  },
   async logout({ commit }){
     commit('resetState');
     
