@@ -8,17 +8,19 @@
 
         <form >
           <div class="w-11/12 mx-auto mt-4">
+            <p v-if="errorMessage" class="text-sm mb-4 text-red-600">{{errorMessage}}</p>
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                 Email
               </label>
-              <input v-model="user.email" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" placeholder="Enter your email">
+              <input v-model="user.email" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" 
+                placeholder="Enter your email" :class="fieldWithError == 'email'? ' border border-red-600': ''">
             </div>
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                 Password
               </label>
-              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password">
+              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
             </div>
             <button class="btn btn-primary" type="button" @click="login">Log in</button>       
             <router-link class="text-primary-dark ml-6 text-sm" to="forgot-password">Forgot password?</router-link>
@@ -53,6 +55,7 @@
 import { mapActions } from 'vuex';
 import FacebookLogin from './FacebookLogin';
 import TwitterLogin from './TwitterLogin';
+import { loginSchema } from '../../schemas'
 export default {
   name: 'login',
   data(){
@@ -60,7 +63,9 @@ export default {
       user: {
         email: '',
         password: '',
-      }
+      },
+      fieldWithError: '',
+      errorMessage: '',
     }
   },
   components: {
@@ -70,9 +75,14 @@ export default {
   methods: {
     ...mapActions('Auth', ['localLogIn']),
     async login(){
-      if(!this.user.email && !this.user.password){
-        console.log('nothin')
-        alert('Fuck off');
+      try {
+        this.fieldWithError = '';
+        this.errorMessage = '';
+        await loginSchema.validate(this.user, {abortEarly: true})
+        
+      } catch (error) {
+        this.fieldWithError = error.path;
+        this.errorMessage = error.message;
         return;
       }
       let success = await this.localLogIn(this.user);
