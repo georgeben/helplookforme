@@ -1,5 +1,7 @@
-import authAPI from './auth'
+import authEndpoint from './auth'
+import userEndpoint from './user'
 
 export {
-  authAPI,
+  authEndpoint,
+  userEndpoint,
 }

@@ -1,6 +1,7 @@
-import { authAPI } from '@/api';
+import { authEndpoint, userEndpoint } from '@/api';
 import { storage, handleError } from '../../utils';
-import constants from '../../constants'
+import constants from '../../constants';
+import { setAuthHeader, removeAuthHeader } from '../../api/httpClient';
 
 
 const initialState = () => ({
@@ -33,13 +34,13 @@ const actions = {
     console.log({ provider });
     // Call the auth api to send the request
     if (provider === 'twitter') {
-      await authAPI.twitterSignIn();
+      await authEndpoint.twitterSignIn();
     }
   },
   async localLogIn({ commit }, payload) {
     try {
       // Call the login API endpoint
-      let result = await authAPI.localLogIn(payload);
+      let result = await authEndpoint.localLogIn(payload);
   
       // Update the store state to store the current user profile
       commit('setUser', result.data.data.user)
@@ -47,30 +48,40 @@ const actions = {
   
       // Store the token
       storage.updateState(constants.TOKEN, result.data.data.token);
-      return true
+      setAuthHeader();
+      return result.data.data.user;
     } catch (error) {
       return handleError(error)
     }
   },
   async signUp({ commit }, payload) {
     try {
-      let result = await authAPI.signUp(payload);
+      let result = await authEndpoint.signUp(payload);
       commit('setUser', result.data.data.user);
       commit('updateLoggedInStatus', true);
 
       // Store the token
       storage.updateState(constants.TOKEN, result.data.data.token);
+      setAuthHeader();
       return result.data.data.user;
     } catch (error) {
-      console.log('Did this run')
       return handleError(error);
     }
     
+  },
+  async getCurrentUserData({ commit }) {
+    try {
+      let result = await userEndpoint.getUserData();
+      commit('setUser', result.data.data.user);
+    } catch (error) {
+      return handleError(error);
+    }
   },
   async logout({ commit }){
     commit('resetState');
     
     // Remove token
+    removeAuthHeader();
     storage.removeState(constants.TOKEN)
 
   }

@@ -180,6 +180,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 export default {
   name: 'user-profile',
   data() {
@@ -189,17 +190,23 @@ export default {
       editingPassword: false,
     };
   },
+  computed: {
+    ...mapState('Auth', ['currentUser']),
+  },
+  async mounted(){
+    if(!this.currentUser){
+      await this.getCurrentUserData();
+    }
+  },
   methods: {
+    ...mapActions('Auth', ['getCurrentUserData']),
     cancel(){
-      alert('Canceled');
       this.editingProfile = false;
     },
     cancelEmailEdit(){
-      alert('Canceled email edit');
       this.editingEmail = false;
     },
     cancelPasswordEdit(){
-      alert('Canceled password edit');
       this.editingPassword = false;
     }
   }

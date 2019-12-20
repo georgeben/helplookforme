@@ -80,8 +80,8 @@ export default {
         this.errorMessage = '';
         await loginSchema.validate(this.user, {abortEarly: true});
 
-        let success = await this.localLogIn(this.user);
-        if(success){
+        let result = await this.localLogIn(this.user);
+        if(result){
           console.log('Is this being called')
           if(!this.$route.query.redirect){
             this.$router.push('/')
