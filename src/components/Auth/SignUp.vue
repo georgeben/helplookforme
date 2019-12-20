@@ -26,24 +26,27 @@
 
         <form v-if="showEmailFields" >
           <div class="w-11/12 mx-auto mt-10">
+            <p v-if="errorMessage" class="text-sm mb-4 text-red-600">{{errorMessage}}</p>
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="fullname">
                 Fullname
               </label>
-              <input v-model="user.fullname" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Firstname lastname">
+              <input v-model="user.fullname" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Firstname lastname"
+                :class="fieldWithError == 'fullname'? ' border border-red-600': ''">
             </div>
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                 Email
               </label>
-              <input v-model="user.email" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email">
+              <input v-model="user.email" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+               type="email" placeholder="Enter your email" :class="fieldWithError == 'email'? ' border border-red-600': ''">
             </div>
             <div class="mb-6">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                 Password
               </label>
-              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password">
-              <p class="text-red-500 text-xs italic" v-if="errorMessage">Please choose a password.</p>
+              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
+              type="password" placeholder="Choose a password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
             </div>
             <button class="btn btn-primary" type="button" @click="signUserUp">Sign up</button>          
           </div>
@@ -86,6 +89,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { signUpSchema } from '../../schemas'
 export default {
   name: 'signup',
   data(){
@@ -98,24 +102,52 @@ export default {
       showEmailFields: false,
       errorMessage: '',
       showConfirmEmail: false,
+      fieldWithError: '',
     }
   },
   methods: {
     ...mapActions('Auth', ['signUp']),
     async signUserUp(){
-      let result = await this.signUp(this.user)
-      console.log({result});
-      // If result is true, check if the newly signed up user has an email address
-      if(result){
-        console.log('Boom')
-        if(result.email){
-          console.log('Chala')
-          // If there is an email address, inform the user that a confirmation email has been sent
-          this.showConfirmEmail = true
-        } else {
-          return this.$router.push('/profile')
+      try {
+        this.errorMessage = '';
+        this.fieldWithError = '';
+        // Check if the fullname is in the right format
+        let names = this.user.fullname.split(' ');
+        if(names.length !== 2){
+          this.fieldWithError = 'fullname';
+          this.errorMessage = 'Please enter firstname and lastname';
+          return;
         }
+        names = names.map(name => name.trim())
+        names.forEach((name, i) => {
+          console.log(name)
+          if(name.length < 2){
+            console.log('why')
+            this.errorMessage = `Please enter a valid ${i === 0 ? 'first':'last'}name`,
+            this.fieldWithError = 'fullname'
+          }
+        });
+        if(this.errorMessage) return;
+
+        await signUpSchema.validate(this.user, {abortEarly: true});
+
+        let result = await this.signUp(this.user)
+        console.log({result});
+        // If result is true, check if the newly signed up user has an email address
+        if(result){
+          if(result.email){
+            // If there is an email address, inform the user that a confirmation email has been sent
+            this.showConfirmEmail = true
+          } else {
+            return this.$router.push('/profile')
+          }
+        }
+      } catch (error) {
+        this.fieldWithError = error.path;
+        this.errorMessage = error.message;
+        return;
       }
+      
     },
     finishSignUp(){
       return this.$router.push('/profile')

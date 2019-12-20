@@ -78,20 +78,21 @@ export default {
       try {
         this.fieldWithError = '';
         this.errorMessage = '';
-        await loginSchema.validate(this.user, {abortEarly: true})
+        await loginSchema.validate(this.user, {abortEarly: true});
+
+        let success = await this.localLogIn(this.user);
+        if(success){
+          console.log('Is this being called')
+          if(!this.$route.query.redirect){
+            this.$router.push('/')
+          }
+          this.$router.push(this.$route.query.redirect)
+        }
         
       } catch (error) {
         this.fieldWithError = error.path;
         this.errorMessage = error.message;
         return;
-      }
-      let success = await this.localLogIn(this.user);
-      if(success){
-        console.log('Is this being called')
-        if(!this.$route.query.redirect){
-          this.$router.push('/')
-        }
-        this.$router.push(this.$route.query.redirect)
       }
     }
   }
