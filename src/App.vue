@@ -13,7 +13,7 @@ export default {
   name: 'app',
   components: {
     Navbar,
-    Footer
+    Footer,
   },
   mounted() {
     let twitterScript = document.createElement('script');

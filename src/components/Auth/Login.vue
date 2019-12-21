@@ -82,7 +82,6 @@ export default {
 
         let result = await this.localLogIn(this.user);
         if(result){
-          console.log('Is this being called')
           if(!this.$route.query.redirect){
             this.$router.push('/')
           }
