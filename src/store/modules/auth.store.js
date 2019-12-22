@@ -61,7 +61,7 @@ const actions = {
       commit('updateLoggedInStatus', true);
 
       // Store the token
-      storage.updateState(constants.TOKEN, result.data.data.token);
+      storage.updateState(constants.TOKEN, result.data.data.user.token);
       setAuthHeader();
       return result.data.data.user;
     } catch (error) {

@@ -5,6 +5,7 @@
         <p class="text-red-500 font-bold" v-if="!currentUser.completeProfile">Please complete your profile to be able to report a case</p>
         <form class="bg-white shadow-lg p-4 mt-4">
           <h1 class="text-xl font-semibold mb-4">User profile</h1>
+          <p v-if="errorMessage" class="text-sm mb-4 text-red-600">{{errorMessage}}</p>
           <div class="mb-3">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
@@ -14,6 +15,7 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="fieldWithError == 'fullname'? ' border border-red-600': ''"
               id="fullname"
               type="text"
               placeholder="Firstname Lastname"
@@ -44,10 +46,11 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="fieldWithError == 'residentialAddress.state'? ' border border-red-600': ''"
               id="state"
               type="text"
               :disabled="!editingProfile"
-              v-model="user.state"
+              v-model="user.residentialAddress.state"
             />
           </div>
 
@@ -60,10 +63,11 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="fieldWithError == 'residentialAddress.country'? ' border border-red-600': ''"
               id="country"
               type="text"
               :disabled="!editingProfile"
-              v-model="user.country"
+              v-model="user.residentialAddress.country"
             />
           </div>
 
@@ -189,6 +193,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { toast } from '../utils';
+import { updateUserProfileSchema } from '../schemas'
 import LocationAutocomplete from '../components/Forms/LocationAutocomplete.vue';
 export default {
   name: 'user-profile',
@@ -204,6 +210,8 @@ export default {
       newPassword: '',
       currentPassword: '',
       address: '',
+      errorMessage: '',
+      fieldWithError: '',
     };
   },
   computed: {
@@ -213,16 +221,34 @@ export default {
     if(!this.currentUser){
       await this.getCurrentUserData();
     }
-    this.user = {...this.currentUser};
-    if(!this.user.state) this.$set(this.user, 'state', '');
-    if(!this.user.country) this.$set(this.user, 'country', '');
+    this.user = {
+      ...this.currentUser,
+      residentialAddress: {
+        ...this.currentUser.residentialAddress,
+      }
+      };
+    if(Object.keys(this.user.residentialAddress).length < 1 ){
+      this.$set(this.user, 'residentialAddress', {
+        state: '',
+        country: '',
+        formatted_address: ''
+      })
+    }
+    this.address = this.user.residentialAddress.formatted_address;
   },
   methods: {
     ...mapActions('Auth', ['getCurrentUserData']),
+    ...mapActions('User', ['updateUserProfile']),
     cancel(){
-      this.user = {...this.currentUser}
+      this.errorMessage = '';
+      this.fieldWithError = '';
+      this.user = {
+        ...this.currentUser,
+        residentialAddress: {
+          ...this.currentUser.residentialAddress
+        }
+      }
       this.editingProfile = false;
-      this.address = ''
     },
     cancelEmailEdit(){
       this.editingEmail = false;
@@ -236,11 +262,37 @@ export default {
     },
     locationSelect(location){
       this.user.residentialAddress = location;
-      this.user.state = location.state;
-      this.user.country = location.country;
     },
-    updateProfile(){
-      console.log('Submittingggg')
+    async updateProfile(){
+      try {
+        this.fieldWithError = '';
+        this.errorMessage = '';
+        // Check if the fullname is in the right format
+        let names = this.user.fullname.split(' ');
+        if(names.length !== 2){
+          this.fieldWithError = 'fullname';
+          this.errorMessage = 'Please enter firstname and lastname';
+          return;
+        }
+        names = names.map(name => name.trim())
+        names.forEach((name, i) => {
+          if(name.length < 2){
+            this.errorMessage = `Please enter a valid ${i === 0 ? 'first':'last'}name`,
+            this.fieldWithError = 'fullname'
+          }
+        });
+        if(this.errorMessage) return;
+        await updateUserProfileSchema.validate(this.user, {abortEarly: true});
+
+        let result = await this.updateUserProfile(this.user);
+        if(result)toast.success('Successfully updated profile');
+        
+      } catch (error) {
+        this.fieldWithError = error.path;
+        this.errorMessage = error.message;
+        return;
+      }
+      
     }
   }
 };

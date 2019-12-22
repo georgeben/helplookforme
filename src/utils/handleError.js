@@ -1,6 +1,9 @@
 import Vue from 'vue'
 export default function (error) {
-  console.log(error.response)
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(error)
+    console.log(error.response)
+  }
   switch (error.response.status) {
     default:
       Vue.toasted.show(error.response.data.error, {

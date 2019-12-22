@@ -27,18 +27,19 @@ export default {
       let country = ac[ac.length - 1].long_name
       let lat = place.geometry.location.lat();
       let long = place.geometry.location.lng();
-      let location = {
+      let selectedLocation = {
         formatted_address: place.formatted_address,
+        location: {
+          type: 'Point',
+          coordinates: [long, lat]
+        },
         state,
         country,
-        lat,
-        long
       }
-      this.$emit('select', location)
+      this.$emit('select', selectedLocation)
       this.$emit('input', this.$refs.autocomplete.value)
     },
     handleInput(e){
-      console.log('Event', e);
       this.$emit('input', e.target.value)
     }
   },

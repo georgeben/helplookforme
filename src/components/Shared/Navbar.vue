@@ -69,8 +69,8 @@ export default {
       this.lastScrollPosition = currentScrollPosition;
     },
     async logUserOut(){
-      await this.logout();
       this.$router.push('/')
+      await this.logout();
     }
   },
   computed: {
