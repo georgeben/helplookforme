@@ -221,12 +221,26 @@ export default {
     if(!this.currentUser){
       await this.getCurrentUserData();
     }
-    this.user = {
-      ...this.currentUser,
-      residentialAddress: {
-        ...this.currentUser.residentialAddress,
+    
+    /* eslint-disable no-unused-vars */
+    this.initUser(this.currentUser)
+    this.$store.subscribe((mutation, state) => {
+      if(mutation.type === 'Auth/setUser'){
+        // Update the user object
+        this.initUser(this.currentUser)
       }
-      };
+    })
+  },
+  methods: {
+    ...mapActions('Auth', ['getCurrentUserData']),
+    ...mapActions('User', ['updateUserProfile']),
+    initUser(userData){
+      this.user = {
+      ...userData,
+      residentialAddress: {
+        ...userData.residentialAddress,
+      }
+    };
     if(Object.keys(this.user.residentialAddress).length < 1 ){
       this.$set(this.user, 'residentialAddress', {
         state: '',
@@ -235,19 +249,11 @@ export default {
       })
     }
     this.address = this.user.residentialAddress.formatted_address;
-  },
-  methods: {
-    ...mapActions('Auth', ['getCurrentUserData']),
-    ...mapActions('User', ['updateUserProfile']),
+    },
     cancel(){
       this.errorMessage = '';
       this.fieldWithError = '';
-      this.user = {
-        ...this.currentUser,
-        residentialAddress: {
-          ...this.currentUser.residentialAddress
-        }
-      }
+      this.initUser(this.currentUser)
       this.editingProfile = false;
     },
     cancelEmailEdit(){
