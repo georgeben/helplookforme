@@ -200,7 +200,7 @@ export default {
           _id: '5de901c625e6c11a822c764b',
           nicknames: ['God win'],
           solved: false,
-          fullname: 'Erema Woman',
+          fullname: 'Erema Test',
           age: 23,
           gender: 'FEMALE',
           language: 'Ijaw',
@@ -217,7 +217,7 @@ export default {
           updatedAt: '2019-12-05T13:10:30.545Z',
           description:
             'Erema Woman aka God win who is a 23 year old got missing on Sat Nov 30 2019 00:00:00 GMT+0100 (West Africa Standard Time) at Banana Island, in Bayelsa, Nigeria.',
-          slug: 'erema-woman',
+          slug: 'erema-test',
           __v: 0,
         },
         {

@@ -8,20 +8,21 @@
 
         <form >
           <div class="w-11/12 mx-auto mt-4">
+            <p v-if="errorMessage" class="text-sm mb-4 text-red-600">{{errorMessage}}</p>
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                 Email
               </label>
-              <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Enter your email">
+              <input v-model="user.email" class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="email" 
+                placeholder="Enter your email" :class="fieldWithError == 'email'? ' border border-red-600': ''">
             </div>
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                 Password
               </label>
-              <input class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password">
-              <p class="text-red-500 text-xs italic" v-if="errorMessage">Please choose a password.</p>
+              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
             </div>
-            <button class="btn btn-primary">Log in</button>       
+            <button class="btn btn-primary" type="button" @click="login">Log in</button>       
             <router-link class="text-primary-dark ml-6 text-sm" to="forgot-password">Forgot password?</router-link>
           </div>
         </form>
@@ -36,15 +37,12 @@
             <span class="text-gray-600 mx-auto">Log in with Google</span>
           </button>
 
-          <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
-            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.73 455.73"><path d="M0 0v455.73h242.704V279.691h-59.33v-71.864h59.33v-60.353c0-43.893 35.582-79.475 79.475-79.475h62.025v64.622h-44.382c-13.947 0-25.254 11.307-25.254 25.254v49.953h68.521l-9.47 71.864h-59.051V455.73H455.73V0H0z" fill="#3a559f"/></svg>
-            <span class="text-gray-600 mx-auto">Log in with Facebook</span>
-          </button>
-
-          <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
+          <FacebookLogin />
+          <TwitterLogin />
+          <!-- <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 97.248c-19.04 8.352-39.328 13.888-60.48 16.576 21.76-12.992 38.368-33.408 46.176-58.016-20.288 12.096-42.688 20.64-66.56 25.408C411.872 60.704 384.416 48 354.464 48c-58.112 0-104.896 47.168-104.896 104.992 0 8.32.704 16.32 2.432 23.936-87.264-4.256-164.48-46.08-216.352-109.792-9.056 15.712-14.368 33.696-14.368 53.056 0 36.352 18.72 68.576 46.624 87.232-16.864-.32-33.408-5.216-47.424-12.928v1.152c0 51.008 36.384 93.376 84.096 103.136-8.544 2.336-17.856 3.456-27.52 3.456-6.72 0-13.504-.384-19.872-1.792 13.6 41.568 52.192 72.128 98.08 73.12-35.712 27.936-81.056 44.768-130.144 44.768-8.608 0-16.864-.384-25.12-1.44C46.496 446.88 101.6 464 161.024 464c193.152 0 298.752-160 298.752-298.688 0-4.64-.16-9.12-.384-13.568 20.832-14.784 38.336-33.248 52.608-54.496z" fill="#03a9f4"/></svg>
             <span class="text-gray-600 mx-auto">Log in with Twitter</span>
-          </button>
+          </button> -->
 
         </div>
         <p class="text-gray-600 mt-4 w-11/12 mx-auto text-sm">Don't have an account yet? <router-link class="text-primary-dark" to="signup">Sign up</router-link> </p>
@@ -54,8 +52,49 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import FacebookLogin from './FacebookLogin';
+import TwitterLogin from './TwitterLogin';
+import { loginSchema } from '../../schemas'
 export default {
+  name: 'login',
+  data(){
+    return {
+      user: {
+        email: '',
+        password: '',
+      },
+      fieldWithError: '',
+      errorMessage: '',
+    }
+  },
+  components: {
+    FacebookLogin,
+    TwitterLogin
+  },
+  methods: {
+    ...mapActions('Auth', ['localLogIn']),
+    async login(){
+      try {
+        this.fieldWithError = '';
+        this.errorMessage = '';
+        await loginSchema.validate(this.user, {abortEarly: true});
 
+        let result = await this.localLogIn(this.user);
+        if(result){
+          if(!this.$route.query.redirect){
+            this.$router.push('/')
+          }
+          this.$router.push(this.$route.query.redirect)
+        }
+        
+      } catch (error) {
+        this.fieldWithError = error.path;
+        this.errorMessage = error.message;
+        return;
+      }
+    }
+  }
 }
 </script>
 
