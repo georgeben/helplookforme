@@ -32,14 +32,7 @@
                   Upload a clear photo of the missing person clearly showing their face. Avoid photos with special filters
                 </p>
               </div>
-              <div class="text-center">
-                <img
-                  class=" h-56 object-cover block mx-auto"
-                  :src="imageUrl"
-                />
-                <input type="file" class="hidden" accept="image/*" ref="imageInput" @change="onFilePicked">
-                <button class="btn bg-gray-300 hover:bg-gray-400 mt-5 mx-auto" @click="pickFile">Click to upload picture</button>
-              </div>
+              <ImagePicker v-model="photo" />
 
             </div>
           </form>
@@ -64,7 +57,7 @@
               @click="submitForm"
               v-if="formNumber === 4"
             >
-              Submit report
+              Submit case
             </button>
           </div>
         </div>
@@ -77,6 +70,7 @@
 import PersonalInformation from '@/components/Forms/Case/PersonalInformation';
 import PhysicalCharacteristics from '@/components/Forms/Case/PhysicalCharacteristics';
 import EventDescription from '@/components/Forms/Case/EventDescription';
+import ImagePicker from '@/components/Forms/ImagePicker.vue';
 import { caseSchema } from '../schemas';
 export default {
   name: 'report-case',
@@ -84,6 +78,7 @@ export default {
     PersonalInformation,
     PhysicalCharacteristics,
     EventDescription,
+    ImagePicker,
   },
   data() {
     return {
@@ -117,16 +112,25 @@ export default {
         lastSeenClothing: '',
         eventCircumstances: '',
       },
-      formNumber: 3,
+      photo: {
+        imageName: '',
+        imageUrl: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg',
+        imageFile: '',
+      },
+      formNumber: 4,
       progressValue: 10,
-      imageName: '',
-      imageUrl: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg',
-      imageFile: '',
       fieldWithError: '',
       errorMessage: '',
     };
   },
   methods: {
+    scrollUp(){
+      window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
+    },
     async incrementFormNumber() {
       this.fieldWithError = '';
       this.errorMessage = '';
@@ -142,17 +146,13 @@ export default {
               break;
             case 3:
               await caseSchema.eventDescription.validate(this.eventDescription, { abortEarly: true });
-              break
+              break;
           }
 
           if(this.errorMessage) return;
           this.formNumber += 1;
           this.progressValue += 25;
-          window.scroll({
-            top: 0,
-            left: 0,
-            behavior: 'smooth',
-          })
+          this.scrollUp();
           } catch (error) {
             console.log(error)
             if(error.name === "ValidationError"){
@@ -170,39 +170,11 @@ export default {
         this.formNumber -= 1;
         this.progressValue -= 25;
       }
-      window.scroll({
-          top: 0,
-          left: 0,
-          behavior: 'smooth',
-        })
-    },
-    pickFile(e) {
-      e.preventDefault();
-      this.$refs.imageInput.click()
-    },
-    onFilePicked(e){
-      const files = e.target.files
-			if(files[0] !== undefined) {
-        /* TODO Facial detection - Try to detect a face in the image the user picks
-          If no face is detected, tell the  user to pick a better photo. This will prevent
-          users from uploading rubbish*/
-				this.imageName = files[0].name
-				if(this.imageName.lastIndexOf('.') <= 0) {
-					return
-				}
-				const fr = new FileReader ()
-				fr.readAsDataURL(files[0])
-				fr.addEventListener('load', () => {
-					this.imageUrl = fr.result
-					this.imageFile = files[0] 
-				})
-			} else {
-				this.imageName = 'No image selected yet'
-				this.imageFile = ''
-				this.imageUrl = 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg'
-			}
+        this.scrollUp();
     },
     submitForm() {
+      // Check if there was an image
+      if(!this.photo.imageFile) return this.errorMessage = 'Please select an image'
       console.log('Finish!');
     },
   },
