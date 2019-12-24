@@ -17,7 +17,9 @@
           </label>
           <input
             class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="fieldWithError == 'height'? ' border border-red-600': ''"
             type="number"
+            id="height"
             v-model="physicalCharacteristics.height"
           />
         </div>
@@ -30,7 +32,9 @@
           </label>
           <input
             class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="fieldWithError == 'weight'? ' border border-red-600': ''"
             type="number"
+            id="weight"
             v-model="physicalCharacteristics.weight"
           />
         </div>
@@ -46,8 +50,10 @@
           </label>
           <textarea
             class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="fieldWithError == 'specialCharacteristics'? ' border border-red-600': ''"
             type="text"
             rows="4"
+            id="special-characteristics"
             placeholder="Does the person have any scar, tribal marks or tattoos?"
             v-model="physicalCharacteristics.specialCharacteristics"
           >
@@ -62,7 +68,9 @@
           </label>
           <textarea
             class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="fieldWithError == 'healthInformation'? ' border border-red-600': ''"
             type="text"
+            id="health"
             rows="4"
             placeholder="Specify health information, e.g is the person disabled in anyway?"
             v-model="physicalCharacteristics.healthInformation"

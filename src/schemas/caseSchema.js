@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
+let today = new Date();
+today.setHours(23, 59, 59, 0); // The end of the day 11:59pm
 const personalInformation = yup.object().shape({
   fullname: yup
     .string()
@@ -70,7 +72,41 @@ const physicalCharacteristics = yup.object().shape({
     .string()
     .trim()
 });
+
+const eventDescription = yup.object().shape({
+  addressLastSeen: yup
+    .object()
+    .shape({
+      location: yup.object().shape({
+        type: yup
+          .string()
+          .trim()
+          .required(),
+        coordinates: yup
+          .array()
+          .of(yup.number())
+          .required(),
+      }),
+      formatted_address: yup
+        .string()
+        .trim()
+        .required('Please enter a valid address'),
+      country: yup
+        .string()
+        .trim()
+        .required('Please specify a country'),
+      state: yup
+        .string()
+        .trim()
+        .required('Please specify a state'),
+    })
+    .required(),
+  dateLastSeen: yup.date().max(today, 'Please enter a valid date'),
+  lastSeenClothing: yup.string().trim(),
+  eventCircumstances: yup.string().trim(),
+});
 export default {
   personalInformation,
   physicalCharacteristics,
+  eventDescription,
 };

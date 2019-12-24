@@ -19,94 +19,10 @@
           <PersonalInformation v-if="formNumber === 1" v-model="personalInformation" :fieldWithError="fieldWithError" />
         
           <!-- Form 2 - Physical Characteristics -->
-          <PhysicalCharacteristics v-show="formNumber === 2" v-model="physicalCharacteristics" />
+          <PhysicalCharacteristics v-if="formNumber === 2" v-model="physicalCharacteristics" :fieldWithError="fieldWithError" />
 
-          <form v-if="formNumber === 3">
-            <div class="mt-4">
-              <div class="mb-6">
-                <p class=" text-lg leading-relaxed">Event description</p>
-                <p class="text-gray-600 text-sm">
-                  Information about how the person got missing
-                </p>
-              </div>
-              <div class="sm:flex sm:justify-between">
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="addressLastSeen"
-                  >
-                    Address last seen
-                  </label>
-                  <!-- TODO This should use an autocomplete form with Google places API -->
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="addressLastSeen"
-                    type="text"
-                  />
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="state"
-                  >
-                    State
-                  </label>
-                  <!-- TODO This should use an autocomplete form with Google places API -->
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="state"
-                    type="text"
-                  />
-                </div>
-              </div>
-
-              <div class="sm:flex sm:justify-between">
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="country"
-                  >
-                    Country
-                  </label>
-                  <!-- TODO This should use an autocomplete form with Google places API -->
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="country"
-                    type="text"
-                  />
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="dateLastSeen"
-                  >
-                    Date last seen
-                  </label>
-                  <!-- TODO This should use an autocomplete form with Google places API -->
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="dateLastSeen"
-                    type="date"
-                  />
-                </div>
-              </div>
-              <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="cloths"
-                  >
-                    Cloths worn by the missing person (optional)
-                  </label>
-                  <textarea
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="cloths"
-                    type="text"
-                    rows="2"
-                    placeholder="E.g orange dress with black hoodie"
-                  ></textarea>
-                </div>
-            </div>
-          </form>
+          <!-- Form 3 - Event Description -->
+          <EventDescription v-if="formNumber === 3" v-model="eventDescription" :fieldWithError="fieldWithError" />
 
           <form v-if="formNumber === 4">
             <div class="mt-4">
@@ -160,12 +76,14 @@
 <script>
 import PersonalInformation from '@/components/Forms/Case/PersonalInformation';
 import PhysicalCharacteristics from '@/components/Forms/Case/PhysicalCharacteristics';
+import EventDescription from '@/components/Forms/Case/EventDescription';
 import { caseSchema } from '../schemas';
 export default {
   name: 'report-case',
   components: {
     PersonalInformation,
     PhysicalCharacteristics,
+    EventDescription,
   },
   data() {
     return {
@@ -188,16 +106,18 @@ export default {
         healthInformation: '',
         specialCharacteristics: '',
       },
-      case: { 
-        addressLastSeen: '',
+      eventDescription: {
+        addressLastSeen: {
+          state: '',
+          country: '',
+          formatted_address: '', // The address from the Google places API
+          address: '', // The value in the address field
+        },
         dateLastSeen: new Date(),
-        physicalInformation: {
-          
-          lastSeenClothing: '',
-        }
-
+        lastSeenClothing: '',
+        eventCircumstances: '',
       },
-      formNumber: 2,
+      formNumber: 3,
       progressValue: 10,
       imageName: '',
       imageUrl: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg',
@@ -215,16 +135,14 @@ export default {
         try {
           switch(this.formNumber){
             case 1:
-              if(this.personalInformation.residentialAddress.address != this.personalInformation.residentialAddress.formatted_address){
-                // the input of the address field is different from the input which was selected
-                this.fieldWithError = 'residentialAddress.formatted_address'
-                this.errorMessage = 'Please select a valid address'
-              }
-              await caseSchema.personalInformation.validate(this.personalInformation, {abortEarly: true});
+              await caseSchema.personalInformation.validate(this.personalInformation, { abortEarly: true });
               break;
             case 2:
-              await caseSchema.physicalCharacteristics.validate(this.physicalCharacteristics, {abortEarly: true});
+              await caseSchema.physicalCharacteristics.validate(this.physicalCharacteristics, { abortEarly: true });
               break;
+            case 3:
+              await caseSchema.eventDescription.validate(this.eventDescription, { abortEarly: true });
+              break
           }
 
           if(this.errorMessage) return;
