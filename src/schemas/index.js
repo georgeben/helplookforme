@@ -1,4 +1,5 @@
 import loginSchema from './loginSchema';
 import signUpSchema from './signUpSchema';
 import updateUserProfileSchema from './updateProfileSchema';
-export { loginSchema, signUpSchema, updateUserProfileSchema };
+import caseSchema from './caseSchema'
+export { loginSchema, signUpSchema, updateUserProfileSchema, caseSchema };

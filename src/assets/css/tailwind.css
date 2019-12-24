@@ -19,4 +19,8 @@ body{
   @apply bg-white shadow-lg;
 }
 
+.error-info{
+  @apply text-sm mb-4 text-red-600;
+}
+
 @tailwind utilities;

@@ -30,7 +30,6 @@
             >
               Residential Address (required)
             </label>
-            <!-- TODO Use an autocomplete select box -->
             <LocationAutocomplete class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                @select="locationSelect" v-model="address" :disabled="!editingProfile" placeholder="Where do you live?" />
           

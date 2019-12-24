@@ -68,6 +68,7 @@ const routes = [
     component: ReportCase,
     meta: {
       requiresAuth: true,
+      complete: true
     },
   },
   {
@@ -132,6 +133,15 @@ router.beforeEach((to, from, next) => {
     next({
       path: '/',
     });
+  }
+
+  // Check that a user's profile is complete before allowing them create a case
+  if (loggedIn && to.matched.some(record => record.meta.complete)) {
+    if (!user.completedProfile) {
+      next({
+        path: '/profile'
+      });
+    }
   }
   next()
 })

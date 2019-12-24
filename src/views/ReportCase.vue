@@ -13,119 +13,11 @@
             max="100"
             :value="progressValue"
           ></progress>
+          <p class="error-info mt-4" v-if="errorMessage">{{errorMessage}}</p>
 
-          <!-- Form 1 - Physical information -->
-          <form v-if="formNumber === 1">
-            <div class="mt-4">
-              <div class="mb-6">
-                <p class=" text-lg leading-relaxed">Personal Information</p>
-                <p class="text-gray-600 text-sm">
-                  Tell us about the person who is missing
-                </p>
-              </div>
-              <div class="sm:flex sm:justify-between">
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="fullname"
-                  >
-                    Fullname
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="fullname"
-                    type="text"
-                    placeholder="Firstname Lastname"
-                  />
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="nicknames"
-                  >
-                    Nicknames (optional)
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="nicknames"
-                    type="text"
-                    placeholder="Separate by commas e.g JBoy, Cindy"
-                  />
-                </div>
-              </div>
-
-              <div class="sm:flex sm:justify-between">
-                <!-- TODO This should be an autocomplete select box -->
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="residential-address"
-                  >
-                    Residential Address
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="residential-address"
-                    type="text"
-                    placeholder="Where does the person live?"
-                  />
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="language"
-                  >
-                    Primary Language
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="language"
-                    type="text"
-                    placeholder="E.g Igbo"
-                  />
-                </div>
-              </div>
-
-              <div class="sm:flex sm:justify-between">
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="age"
-                  >
-                    Age
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="age"
-                    type="number"
-                    placeholder="How old is the person?"
-                  />
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="gender"
-                  >
-                    Gender
-                  </label>
-                  <select
-                    id="gender"
-                    class="border border-gray-400 px-3 py-2 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  >
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                    <option value="OTHER">Other</option>
-                  </select>
-                  <!-- <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="gender"
-                    type="text"
-                    placeholder="E.g Igbo"
-                  /> -->
-                </div>
-              </div>
-            </div>
-          </form>
+          <!-- Form 1 - Personal information -->
+          <PersonalInformation v-if="formNumber === 1" v-model="personalInformation" :fieldWithError="fieldWithError" />
+        
 
           <form v-if="formNumber === 2">
             <div class="mt-4">
@@ -338,27 +230,83 @@
 </template>
 
 <script>
+import PersonalInformation from '@/components/Forms/Case/PersonalInformation';
+import { caseSchema } from '../schemas';
 export default {
   name: 'report-case',
+  components: {
+    PersonalInformation,
+  },
   data() {
     return {
+      personalInformation: {
+        fullname: '',
+        nicknames: '',
+        residentialAddress: {
+          state: '',
+          country: '',
+          formatted_address: '', // The address from the Google places API
+          address: '', // The value in the address field
+        },
+        language: '',
+        age: 0,
+        gender: '',
+      },
+      case: { 
+        addressLastSeen: '',
+        dateLastSeen: new Date(),
+        physicalInformation: {
+          height: '',
+          weight: '',
+          healthInformation: '',
+          specialCharacteristics: '',
+          lastSeenClothing: '',
+        }
+
+      },
       formNumber: 1,
       progressValue: 10,
       imageName: '',
       imageUrl: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg',
       imageFile: '',
+      fieldWithError: '',
+      errorMessage: '',
     };
   },
   methods: {
-    incrementFormNumber() {
+    async incrementFormNumber() {
+      this.fieldWithError = '';
+      this.errorMessage = '';
       if (this.formNumber < 4) {
-        this.formNumber += 1;
-        this.progressValue += 25;
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: 'smooth',
-        })
+        // Check which form has been completed and validate it
+        try {
+          switch(this.formNumber){
+            case 1:
+              if(this.personalInformation.residentialAddress.address != this.personalInformation.residentialAddress.formatted_address){
+                // the input of the address field is different from the input which was selected
+                this.fieldWithError = 'residentialAddress.formatted_address'
+                this.errorMessage = 'Please select a valid address'
+              }
+              await caseSchema.personalInformation.validate(this.personalInformation, {abortEarly: true});
+              break;
+          }
+
+          if(this.errorMessage) return;
+          this.formNumber += 1;
+          this.progressValue += 25;
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          })
+          } catch (error) {
+            console.log(error)
+            if(error.name === "ValidationError"){
+              this.fieldWithError = error.path;
+              this.errorMessage = error.message;
+              return;
+            }
+          }
       }
     },
     decrementFormNumber() {
