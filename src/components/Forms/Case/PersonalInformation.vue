@@ -21,7 +21,7 @@
             type="text"
             placeholder="Firstname Lastname"
             v-model="personalInfo.fullname"
-            @input="handleInput"
+            
           />
         </div>
         <div class="mb-4 sm:w-47">
@@ -37,7 +37,6 @@
             type="text"
             placeholder="Separate by commas e.g JBoy, Cindy"
             v-model="personalInfo.nicknames"
-            @input="handleInput"
           />
         </div>
       </div>
@@ -67,7 +66,6 @@
             type="text"
             placeholder="E.g Igbo"
             v-model="personalInfo.language"
-            @input="handleInput"
           />
         </div>
       </div>
@@ -83,7 +81,6 @@
             type="number"
             placeholder="How old is the person?"
             v-model="personalInfo.age"
-            @input="handleInput"
           />
         </div>
         <div class="mb-4 sm:w-47">
@@ -97,7 +94,6 @@
             class="border border-gray-400 px-3 py-2 w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             :class="fieldWithError == 'gender'? ' border border-red-600': ''"
             v-model="personalInfo.gender"
-            @input="handleInput"
           >
             <option value="MALE">Male</option>
             <option value="FEMALE">Female</option>
@@ -129,10 +125,6 @@ export default {
     }
   },
   methods: {
-    // eslint-disable-next-line no-unused-vars
-    handleInput(e) {
-      this.$emit('input', this.personalInfo);
-    },
     locationSelect(location){
       this.personalInfo.residentialAddress = location;
       this.$emit('input', this.personalInfo);

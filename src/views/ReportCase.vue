@@ -164,6 +164,8 @@ export default {
       }
     },
     decrementFormNumber() {
+      this.fieldWithError = '';
+      this.errorMessage = '';
       if (this.formNumber > 1) {
         this.formNumber -= 1;
         this.progressValue -= 25;
