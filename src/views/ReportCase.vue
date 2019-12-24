@@ -18,80 +18,8 @@
           <!-- Form 1 - Personal information -->
           <PersonalInformation v-if="formNumber === 1" v-model="personalInformation" :fieldWithError="fieldWithError" />
         
-
-          <form v-if="formNumber === 2">
-            <div class="mt-4">
-              <div class="mb-6">
-                <p class=" text-lg leading-relaxed">Physical characteristics</p>
-                <p class="text-gray-600 text-sm">
-                  Information about how the person looks like
-                </p>
-              </div>
-              <div class="sm:flex sm:justify-between">
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="height"
-                  >
-                    Height in meters (optional)
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="height"
-                    type="number"
-                  />
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="weight"
-                  >
-                    Weight in kg (optional)
-                  </label>
-                  <input
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="weight"
-                    type="number"
-                    placeholder=""
-                  />
-                </div>
-              </div>
-
-              <div class="sm:flex sm:justify-between">
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="special-characteristics"
-                  >
-                    Special characteristics (optional)
-                  </label>
-                  <textarea
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="special-characteristics"
-                    type="text"
-                    rows="4"
-                    placeholder="Does the person have any scar, tribal marks or tattoos?"
-                  >
-                  </textarea>
-                </div>
-                <div class="mb-4 sm:w-47">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="health"
-                  >
-                    Health information (optional)
-                  </label>
-                  <textarea
-                    class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="health"
-                    type="text"
-                    rows="4"
-                    placeholder="Specify health information, e.g is the person disabled in anyway?"
-                  ></textarea>
-                </div>
-              </div>
-            </div>
-          </form>
+          <!-- Form 2 - Physical Characteristics -->
+          <PhysicalCharacteristics v-show="formNumber === 2" v-model="physicalCharacteristics" />
 
           <form v-if="formNumber === 3">
             <div class="mt-4">
@@ -231,11 +159,13 @@
 
 <script>
 import PersonalInformation from '@/components/Forms/Case/PersonalInformation';
+import PhysicalCharacteristics from '@/components/Forms/Case/PhysicalCharacteristics';
 import { caseSchema } from '../schemas';
 export default {
   name: 'report-case',
   components: {
     PersonalInformation,
+    PhysicalCharacteristics,
   },
   data() {
     return {
@@ -252,19 +182,22 @@ export default {
         age: 0,
         gender: '',
       },
+      physicalCharacteristics: {
+        height: '',
+        weight: '',
+        healthInformation: '',
+        specialCharacteristics: '',
+      },
       case: { 
         addressLastSeen: '',
         dateLastSeen: new Date(),
         physicalInformation: {
-          height: '',
-          weight: '',
-          healthInformation: '',
-          specialCharacteristics: '',
+          
           lastSeenClothing: '',
         }
 
       },
-      formNumber: 1,
+      formNumber: 2,
       progressValue: 10,
       imageName: '',
       imageUrl: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg',
@@ -288,6 +221,9 @@ export default {
                 this.errorMessage = 'Please select a valid address'
               }
               await caseSchema.personalInformation.validate(this.personalInformation, {abortEarly: true});
+              break;
+            case 2:
+              await caseSchema.physicalCharacteristics.validate(this.physicalCharacteristics, {abortEarly: true});
               break;
           }
 

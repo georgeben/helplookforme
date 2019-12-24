@@ -48,6 +48,29 @@ const personalInformation = yup.object().shape({
     .required('please select a gender')
     .oneOf(['MALE', 'FEMALE'], 'Please select a gender'),
 });
+
+// helper for yup transform function
+function emptyStringToNull(value, originalValue) {
+  if (typeof originalValue === 'string' && originalValue === '') {
+    return null;
+  }
+  return value;
+}
+const physicalCharacteristics = yup.object().shape({
+  height: yup
+    .number()
+    .min(0.1)
+    .transform(emptyStringToNull).nullable(),
+  weight: yup
+    .number()
+    .min(1)
+    .transform(emptyStringToNull).nullable(),
+  specialCharacteristics: yup.string().trim(),
+  healthInformation: yup
+    .string()
+    .trim()
+});
 export default {
   personalInformation,
+  physicalCharacteristics,
 };
