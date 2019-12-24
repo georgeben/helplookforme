@@ -77,6 +77,19 @@ const actions = {
       return handleError(error);
     }
   },
+  async verifyEmail({ commit }, payload) {
+    try {
+      // Call the verify email API endpoint
+      let result = await authEndpoint.verifyEmail(payload);
+      // Update the state with the updated information
+      commit('setUser', result.data.data.user);
+      // Store the updated token
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      return result;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
   async logout({ commit }){
     commit('resetState');
     

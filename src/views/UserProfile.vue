@@ -2,7 +2,7 @@
   <section class="bg-gray-100">
     <div class="container">
       <div class="mx-auto sm:w-2/3 lg:w-1/2 mt-16">
-        <p class="text-red-500 font-bold" v-if="!currentUser.completeProfile">Please complete your profile to be able to report a case</p>
+        <p class="text-red-500 font-bold" v-if="!currentUser.completedProfile">Please complete your profile to be able to report a case</p>
         <form class="bg-white shadow-lg p-4 mt-4">
           <h1 class="text-xl font-semibold mb-4">User profile</h1>
           <p v-if="errorMessage" class="text-sm mb-4 text-red-600">{{errorMessage}}</p>
@@ -294,9 +294,11 @@ export default {
         if(result)toast.success('Successfully updated profile');
         
       } catch (error) {
-        this.fieldWithError = error.path;
-        this.errorMessage = error.message;
-        return;
+        if(error.name === "ValidationError"){
+          this.fieldWithError = error.path;
+          this.errorMessage = error.message;
+          return;
+        }
       }
       
     }

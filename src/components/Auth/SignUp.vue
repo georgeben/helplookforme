@@ -139,18 +139,20 @@ export default {
             // If there is an email address, inform the user that a confirmation email has been sent
             this.showConfirmEmail = true
           } else {
-            return this.$router.push('/profile')
+            return this.$router.replace('/profile')
           }
         }
       } catch (error) {
-        this.fieldWithError = error.path;
-        this.errorMessage = error.message;
-        return;
+        if(error.name === "ValidationError"){
+          this.fieldWithError = error.path;
+          this.errorMessage = error.message;
+          return;
+        }
       }
       
     },
     finishSignUp(){
-      return this.$router.push('/profile')
+      return this.$router.replace('/profile')
     }
   }
 };

@@ -2,6 +2,8 @@ import axios from 'axios';
 import { storage } from '../utils/';
 import constants from '../constants';
 
+let authInterceptorID;
+
 const baseURL =
   process.env.NODE_ENV === 'production'
     ? process.env.VUE_APP_API_BASE_URL
@@ -21,11 +23,11 @@ const authInterceptor = config => {
 }
 
 function setAuthHeader() {
-  httpClient.interceptors.request.use(authInterceptor)
+  authInterceptorID = httpClient.interceptors.request.use(authInterceptor);
 }
 
 function removeAuthHeader() {
-  httpClient.interceptors.request.eject(authInterceptor)
+  httpClient.interceptors.request.eject(authInterceptorID);
 }
 
 export {
