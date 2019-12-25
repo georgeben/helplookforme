@@ -8,6 +8,7 @@
           <h1 class="text-center text-xl font-semibold pb-6 mx-auto">
             Report a case
           </h1>
+          <!-- TODO Create a separate component for progress bar -->
           <progress
             class="w-full h-2"
             max="100"
@@ -72,6 +73,8 @@ import PhysicalCharacteristics from '@/components/Forms/Case/PhysicalCharacteris
 import EventDescription from '@/components/Forms/Case/EventDescription';
 import ImagePicker from '@/components/Forms/ImagePicker.vue';
 import { caseSchema } from '../schemas';
+import { mapActions } from 'vuex';
+import { toast } from '../utils'
 export default {
   name: 'report-case',
   components: {
@@ -117,13 +120,14 @@ export default {
         imageUrl: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg',
         imageFile: '',
       },
-      formNumber: 4,
+      formNumber: 1,
       progressValue: 10,
       fieldWithError: '',
       errorMessage: '',
     };
   },
   methods: {
+    ...mapActions('Case', ['submitCase']),
     scrollUp(){
       window.scroll({
           top: 0,
@@ -154,7 +158,6 @@ export default {
           this.progressValue += 25;
           this.scrollUp();
           } catch (error) {
-            console.log(error)
             if(error.name === "ValidationError"){
               this.fieldWithError = error.path;
               this.errorMessage = error.message;
@@ -169,13 +172,45 @@ export default {
       if (this.formNumber > 1) {
         this.formNumber -= 1;
         this.progressValue -= 25;
-      }
         this.scrollUp();
+      }
     },
-    submitForm() {
+    async submitForm() {
       // Check if there was an image
-      if(!this.photo.imageFile) return this.errorMessage = 'Please select an image'
-      console.log('Finish!');
+      if(!this.photo.imageFile) return this.errorMessage = 'Please select an image';
+
+      // TODO Check if the image contains a face
+
+      // TODO Might need to add CAPTCHA
+      let physicalInformation = {};
+      Object.keys(this.physicalCharacteristics).forEach(key => {
+        if(this.physicalCharacteristics[key]){
+          physicalInformation[key] = this.physicalCharacteristics[key]
+        }
+      });
+      // Get nicknames array
+      let nicknamesArr = this.personalInformation.nicknames.split(',');
+
+      const caseData = new FormData();
+      caseData.append('fullname', this.personalInformation.fullname);
+      if(nicknamesArr.length > 1) caseData.append('nicknames', JSON.stringify(nicknamesArr));
+      caseData.append('age', parseInt(this.personalInformation.age));
+      caseData.append('residentialAddress', JSON.stringify(this.personalInformation.residentialAddress));
+      caseData.append('gender', this.personalInformation.gender);
+      caseData.append('language', this.personalInformation.language);
+      caseData.append('addressLastSeen', JSON.stringify(this.eventDescription.addressLastSeen));
+      caseData.append('dateLastSeen', this.eventDescription.dateLastSeen);
+      if(this.eventDescription.lastSeenClothing) caseData.append('lastSeenClothing', this.eventDescription.lastSeenClothing);
+      if(this.eventDescription.eventCircumstances) caseData.append('eventCircumstances', this.eventDescription.eventCircumstances);
+      if(Object.keys(physicalInformation).length >= 1) caseData.append('physicalInformation', JSON.stringify(physicalInformation))
+      caseData.append('casePhoto', this.photo.imageFile);
+
+      let result = await this.submitCase(caseData);
+      if(result){
+        // Send the person to the reported cases page
+        toast.success('Your case has been reported')
+        this.$router.push('/reported-cases');
+      }
     },
   },
 };
