@@ -14,6 +14,9 @@
               Edit a case
             </h1>
           </div>
+          <h1 class="text-center text-xl font-semibold pb-6 mx-auto" v-else>
+            Report a case
+          </h1>
 
           <ProgressBar :progressValue="progressValue" />
 
@@ -198,7 +201,7 @@ export default {
       if(this.eventDescription.lastSeenClothing) caseData.append('lastSeenClothing', this.eventDescription.lastSeenClothing);
       if(this.eventDescription.eventCircumstances) caseData.append('eventCircumstances', this.eventDescription.eventCircumstances);
       if(Object.keys(physicalInformation).length >= 1) caseData.append('physicalInformation', JSON.stringify(physicalInformation))
-      caseData.append('casePhoto', this.photo.imageFile);
+      if(this.photo.imageFile)  caseData.append('casePhoto', this.photo.imageFile);
 
       // Check if case is being created or edited
       let result;

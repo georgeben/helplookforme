@@ -76,6 +76,7 @@
           ></textarea>
         </div>
         <div class="mb-4 sm:w-47">
+          <!-- TODO Add a min text option to this field, so people don't type rubbish -->
           <label class="block text-gray-700 text-sm font-bold mb-2" for="eventCircumstances">
             Event circumstances (optional)
           </label>
