@@ -83,15 +83,17 @@ export default {
         let result = await this.localLogIn(this.user);
         if(result){
           if(!this.$route.query.redirect){
-            this.$router.push('/')
+            this.$router.replace('/')
           }
-          this.$router.push(this.$route.query.redirect)
+          this.$router.replace(this.$route.query.redirect)
         }
         
       } catch (error) {
-        this.fieldWithError = error.path;
-        this.errorMessage = error.message;
-        return;
+        if(error.name === "ValidationError"){
+          this.fieldWithError = error.path;
+          this.errorMessage = error.message;
+          return;
+        }
       }
     }
   }

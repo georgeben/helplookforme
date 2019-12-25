@@ -2,7 +2,7 @@
   <section class="bg-gray-100">
     <div class="container">
       <div class="mx-auto sm:w-2/3 lg:w-1/2 mt-16">
-        <p class="text-red-500 font-bold" v-if="!currentUser.completeProfile">Please complete your profile to be able to report a case</p>
+        <p class="text-red-500 font-bold" v-if="!currentUser.completedProfile">Please complete your profile to be able to report a case</p>
         <form class="bg-white shadow-lg p-4 mt-4">
           <h1 class="text-xl font-semibold mb-4">User profile</h1>
           <p v-if="errorMessage" class="text-sm mb-4 text-red-600">{{errorMessage}}</p>
@@ -30,7 +30,6 @@
             >
               Residential Address (required)
             </label>
-            <!-- TODO Use an autocomplete select box -->
             <LocationAutocomplete class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                @select="locationSelect" v-model="address" :disabled="!editingProfile" placeholder="Where do you live?" />
           
@@ -221,12 +220,26 @@ export default {
     if(!this.currentUser){
       await this.getCurrentUserData();
     }
-    this.user = {
-      ...this.currentUser,
-      residentialAddress: {
-        ...this.currentUser.residentialAddress,
+    
+    /* eslint-disable no-unused-vars */
+    this.initUser(this.currentUser)
+    this.$store.subscribe((mutation, state) => {
+      if(mutation.type === 'Auth/setUser'){
+        // Update the user object
+        this.initUser(this.currentUser)
       }
-      };
+    })
+  },
+  methods: {
+    ...mapActions('Auth', ['getCurrentUserData']),
+    ...mapActions('User', ['updateUserProfile']),
+    initUser(userData){
+      this.user = {
+      ...userData,
+      residentialAddress: {
+        ...userData.residentialAddress,
+      }
+    };
     if(Object.keys(this.user.residentialAddress).length < 1 ){
       this.$set(this.user, 'residentialAddress', {
         state: '',
@@ -235,19 +248,11 @@ export default {
       })
     }
     this.address = this.user.residentialAddress.formatted_address;
-  },
-  methods: {
-    ...mapActions('Auth', ['getCurrentUserData']),
-    ...mapActions('User', ['updateUserProfile']),
+    },
     cancel(){
       this.errorMessage = '';
       this.fieldWithError = '';
-      this.user = {
-        ...this.currentUser,
-        residentialAddress: {
-          ...this.currentUser.residentialAddress
-        }
-      }
+      this.initUser(this.currentUser)
       this.editingProfile = false;
     },
     cancelEmailEdit(){
@@ -288,9 +293,11 @@ export default {
         if(result)toast.success('Successfully updated profile');
         
       } catch (error) {
-        this.fieldWithError = error.path;
-        this.errorMessage = error.message;
-        return;
+        if(error.name === "ValidationError"){
+          this.fieldWithError = error.path;
+          this.errorMessage = error.message;
+          return;
+        }
       }
       
     }

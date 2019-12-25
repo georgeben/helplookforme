@@ -10,7 +10,8 @@ import ReportedCases from '../views/ReportedCases'
 import EditCase from '../views/EditCase';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
-import ForgotPassword from '@/components/Auth/ForgotPassword.vue'
+import ForgotPassword from '@/components/Auth/ForgotPassword.vue';
+import VerifyEmail from '@/components/Auth/VerifyEmail.vue';
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -56,10 +57,18 @@ const routes = [
     },
   },
   {
+    path: '/verify-email',
+    component: VerifyEmail,
+    meta: {
+      unverified: true
+    }
+  },
+  {
     path: '/report-case',
     component: ReportCase,
     meta: {
       requiresAuth: true,
+      complete: true
     },
   },
   {
@@ -101,11 +110,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let loggedIn = store.getters['Auth/getLoginStatus'];
+  let user = store.getters['Auth/getCurrentUser'];
+  // Don't allow logged in users to view pages for only guests e.g signup, login
   if (loggedIn && to.matched.some(record => record.meta.guest)) {
     next({
       path: '/'
     })
   }
+
+  // Don't allow guests (people who have not signed in to view protected routes)
   if (!loggedIn && to.matched.some(record => record.meta.requiresAuth)) {
     next({
       path: '/auth/login',
@@ -113,6 +126,22 @@ router.beforeEach((to, from, next) => {
         redirect: to.fullPath
       }
     })
+  }
+
+  // Don't allow people who have verified their email, to view the verify email page
+  if (user && user.verifiedEmail && to.matched.some(record => record.meta.unverified)) {
+    next({
+      path: '/',
+    });
+  }
+
+  // Check that a user's profile is complete before allowing them create a case
+  if (loggedIn && to.matched.some(record => record.meta.complete)) {
+    if (!user.completedProfile) {
+      next({
+        path: '/profile'
+      });
+    }
   }
   next()
 })

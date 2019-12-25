@@ -15,7 +15,11 @@ Vue.use(Toasted)
 let loggedIn = store.getters['Auth/getLoginStatus'];
 let token = storage.loadState(constants.TOKEN)
 if (loggedIn && token) {
+  // If the req for fetching the user data failed, then it might be that the user's token has changed
+  // probably from an update on another device,
+  // if so, log the user out 
   setAuthHeader();
+  store.dispatch('Auth/getCurrentUserData');
 }
 
 new Vue({
