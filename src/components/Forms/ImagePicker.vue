@@ -2,7 +2,7 @@
   <div class="text-center">
     <img
       class=" h-56 object-cover block mx-auto"
-      :src="photo.imageUrl"
+      :src="photo.photoURL? photo.photoURL: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg'"
     />
     <input type="file" class="hidden" accept="image/*" ref="imageInput" @change="onFilePicked">
     <button class="btn bg-gray-300 hover:bg-gray-400 mt-5 mx-auto" @click="pickFile">Click to upload picture</button>
@@ -40,13 +40,13 @@ export default {
 				const fr = new FileReader ()
 				fr.readAsDataURL(files[0])
 				fr.addEventListener('load', () => {
-					this.photo.imageUrl = fr.result
+					this.photo.photoURL = fr.result
 					this.photo.imageFile = files[0] 
 				})
 			} else {
 				this.photo.imageName = 'No image selected yet'
 				this.photo.imageFile = ''
-				this.photo.imageUrl = 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg'
+				this.photo.photoURL = 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg'
 			}
     }
   }
