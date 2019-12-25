@@ -11,12 +11,19 @@ const initialState = () => (
 const state = initialState();
 
 const mutations = {
-  
+  /**
+   * Updates the list of user cases
+   * @param {Object} state - The current state
+   * @param {*} payload - The user cases array
+   */
+  setUserCases(state, payload) {
+    state.userCases = payload;
+  }
 }
 
 const actions = {
   /**
-   * 
+   * Updates the user's profile
    * @param {Object} context - The Vuex store instance
    * @param {Object} payload - The updated user profile
    */
@@ -31,7 +38,20 @@ const actions = {
     } catch (error) {
       return handleError(error);
     }
+  },
 
+  /**
+   * Retrieves all the cases reported by the user
+   * @param {Object} context - The Vuex store instance 
+   */
+  async getUserCases({ commit }) {
+    try {
+      let result = await userEndpoint.getUserCases();
+      commit('setUserCases', result.data.data.cases);
+      return result.data.data.cases;
+    } catch (error) {
+      return handleError(error);
+    }
   }
 };
 

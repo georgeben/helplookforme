@@ -13,7 +13,7 @@
             </div>
             <img
               class="h-48 w-full object-contain mb-4"
-              src="../assets/images/boy.png"
+              :src="item.photoURL"
               alt="Missing person photo"
             />
           </div>
@@ -87,7 +87,7 @@
           <p>
             <span class="text-gray-700 text-sm">Address last seen: </span>
             <span class="font-semibold">
-              {{ item.addressLastSeen }}
+              {{ item.addressLastSeen.formatted_address }}
             </span>
           </p>
           <p>
@@ -95,20 +95,20 @@
               Residential address:
             </span>
             <span class="font-semibold">
-              {{ item.redisdentialAddress }}
+              {{ item.residentialAddress.formatted_address }}
             </span>
           </p>
-          <p v-if="item.height">
+          <p v-if="item.physicalInformation.height">
             <span class="text-gray-700 text-sm">
               Height:
             </span>
-            <span class="font-semibold"> {{ item.height }}m </span>
+            <span class="font-semibold"> {{ item.physicalInformation.height }}m </span>
           </p>
-          <p v-if="item.weight">
+          <p v-if="item.physicalInformation.weight">
             <span class="text-gray-700 text-sm">
               Weight:
             </span>
-            <span class="font-semibold"> {{ item.weight }}kg </span>
+            <span class="font-semibold"> {{ item.physicalInformation.weight }}kg </span>
           </p>
           <p>
             <span class="text-gray-700 text-sm">
@@ -118,35 +118,35 @@
               {{ item.language }}
             </span>
           </p>
-          <p v-if="item.specialCharacteristics">
+          <p v-if="item.physicalInformation.specialCharacteristics">
             <span class="text-gray-700 text-sm">
               Special characteristics:
             </span>
             <span class="font-semibold">
-              {{ item.specialCharacteristics }}
+              {{ item.physicalInformation.specialCharacteristics }}
             </span>
           </p>
-          <p v-if="item.clothsLastWorn">
+          <p v-if="item.lastSeenClothing">
             <span class="text-gray-700 text-sm">
               Cloths last worn:
             </span>
             <span class="font-semibold">
-              {{ item.clothsLastWorn }}
+              {{ item.lastSeenClothing }}
             </span>
           </p>
-          <p v-if="item.eventDescription">
+          <p v-if="item.eventCircumstances">
             <span class="text-gray-700 text-sm">
               Event Description:
             </span>
             <span class="font-semibold">
-              {{ item.eventDescription }}
+              {{ item.eventCircumstances }}
             </span>
           </p>
         </div>
         <OptionsDropdown class="hidden lg:block" :slug="item.slug" />
       </div>
     </div>
-    <div class="container mt-20">
+    <div class="container mt-20" v-else>
       <h1 class="text-center text-xl">You haven't reported any cases yet.</h1>
     </div> 
   </section>
@@ -154,72 +154,26 @@
 
 <script>
 import OptionsDropdown from '../components/OptionsDropdown.vue';
+import { mapActions } from 'vuex'
 
 export default {
   name: 'reported-cases',
   components: {
     OptionsDropdown,
   },
+  async created(){
+    // Fetch the latest cases
+    let cases = await this.getUserCases();
+    this.reportedCases = cases;
+  },
   data() {
     return {
-      reportedCases: [
-        {
-          eventDescription: 'Naso',
-          slugParam: this.$route.params.slug,
-          name: 'Anthony Joshua',
-          nicknames: ['Abe', 'Jboy'],
-          solved: false,
-          fullname: 'Erema Woman',
-          age: 23,
-          gender: 'FEMALE',
-          language: 'Ijaw',
-          addressLastSeen: 'Banana Island',
-          redisdentialAddress: '24 Ikoyi, Lagos',
-          state: 'Bayelsa',
-          country: 'Nigeria',
-          dateLastSeen: '2019-11-29T23:00:00.000Z',
-          reportedBy: '5dda966fdd944118fd29d5f2',
-          photoURL:
-            'https://res.cloudinary.com/georgeben/image/upload/v1575551429/report_missing_people/case_photos/m80ugtw49rzhwch0bf9d.jpg',
-          cloudinaryPhotoID:
-            'report_missing_people/case_photos/m80ugtw49rzhwch0bf9d',
-          createdAt: '2019-12-05T13:10:30.545Z',
-          updatedAt: '2019-12-05T13:10:30.545Z',
-          description:
-            'Erema Woman aka God win who is a 23 year old got missing on Sat Nov 30 2019 00:00:00 GMT+0100 (West Africa Standard Time) at Banana Island, in Bayelsa, Nigeria.',
-          slug: 'erema-woman',
-          height: 1.5,
-        },
-        {
-          eventDescription: 'Naso',
-          slugParam: this.$route.params.slug,
-          name: 'Anthony Joshua',
-          nicknames: ['Abe', 'Jboy'],
-          solved: false,
-          fullname: 'Erema Woman',
-          age: 23,
-          gender: 'FEMALE',
-          language: 'Ijaw',
-          addressLastSeen: 'Banana Island',
-          redisdentialAddress: '24 Ikoyi, Lagos',
-          state: 'Bayelsa',
-          country: 'Nigeria',
-          dateLastSeen: '2019-11-29T23:00:00.000Z',
-          reportedBy: '5dda966fdd944118fd29d5f2',
-          photoURL:
-            'https://res.cloudinary.com/georgeben/image/upload/v1575551429/report_missing_people/case_photos/m80ugtw49rzhwch0bf9d.jpg',
-          cloudinaryPhotoID:
-            'report_missing_people/case_photos/m80ugtw49rzhwch0bf9d',
-          createdAt: '2019-12-05T13:10:30.545Z',
-          updatedAt: '2019-12-05T13:10:30.545Z',
-          description:
-            'Erema Woman aka God win who is a 23 year old got missing on Sat Nov 30 2019 00:00:00 GMT+0100 (West Africa Standard Time) at Banana Island, in Bayelsa, Nigeria.',
-          slug: 'erema-woman',
-          height: 1.5,
-        },
-      ],
+      reportedCases: [],
     };
   },
+  methods: {
+    ...mapActions('User', ['getUserCases']),
+  }
 };
 </script>
 
