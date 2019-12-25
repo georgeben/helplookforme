@@ -89,9 +89,11 @@ export default {
         }
         
       } catch (error) {
-        this.fieldWithError = error.path;
-        this.errorMessage = error.message;
-        return;
+        if(error.name === "ValidationError"){
+          this.fieldWithError = error.path;
+          this.errorMessage = error.message;
+          return;
+        }
       }
     }
   }
