@@ -73,7 +73,9 @@ const actions = {
 };
 
 const getters = {
-
+  getCaseBySlug: (state) => (slug) => {
+    return state.cases.find(item => item.slug === slug)
+  }
 }
 
 export default {
