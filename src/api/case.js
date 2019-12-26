@@ -11,7 +11,7 @@ async function submitCase(payload) {
 }
 
 /**
- * 
+ * Retrieves data about a single case
  * @param {String} slug - The slug if the case to retrieve
  * @returns {Promise} - The API request to fetch the case
  */
@@ -20,7 +20,7 @@ async function getCase(slug) {
 }
 
 /**
- * 
+ * Updates an already reported case
  * @param {String} slug - The slug of case to update
  * @param {Object} payload - The updated case
  * @returns {Promise} - The API request to update the case
@@ -29,8 +29,18 @@ async function updateCase(slug, payload) {
   return httpClient.put(`${endpoint}/${slug}`, payload);
 }
 
+/**
+ * Retrieves reported cases
+ * @param {Number} offset - The number of documents to skip
+ * @param {Number} limit - The maximum number of documents to retrieve
+ */
+async function getCases(offset, limit) {
+  return httpClient.get(`${endpoint}?offset=${offset}&limit=${limit}`);
+}
+
 export default {
   submitCase,
   getCase,
   updateCase,
+  getCases,
 };
