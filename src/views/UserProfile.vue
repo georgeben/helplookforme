@@ -133,6 +133,7 @@
 
         <form class="bg-white shadow-lg mt-4 p-4">
           <h1 class="text-xl font-semibold mb-3">Set password</h1>
+           <p class="error-info mt-4" v-if="errorMessage">{{errorMessage}}</p>
           <div class="mb-3">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
@@ -142,6 +143,7 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="fieldWithError == 'currentPassword'? ' border border-red-600': ''"
               id="password"
               type="password"
               :disabled="!editingPassword"
@@ -158,6 +160,7 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="fieldWithError == 'newPassword'? ' border border-red-600': ''"
               id="newPassword"
               type="password"
               placeholder="Choose a new password"
@@ -179,7 +182,7 @@
               class="btn"
               :class="editingPassword ? 'btn-primary':'bg-gray-200 hover:bg-gray-300'"
               type="button"
-              @click="editingPassword = !editingPassword"
+              @click="editingPassword? updatePassword(): editingPassword = !editingPassword"
             >
               {{editingPassword ? 'Update password' : 'Set password'}}
             </button>
@@ -193,7 +196,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { toast } from '../utils';
-import { updateUserProfileSchema } from '../schemas'
+import { updateUserProfileSchema, updatePasswordSchema } from '../schemas'
 import LocationAutocomplete from '../components/Forms/LocationAutocomplete.vue';
 export default {
   name: 'user-profile',
@@ -232,7 +235,7 @@ export default {
   },
   methods: {
     ...mapActions('Auth', ['getCurrentUserData']),
-    ...mapActions('User', ['updateUserProfile']),
+    ...mapActions('User', ['updateUserProfile', 'updateUserPassword']),
     initUser(userData){
       this.user = {
       ...userData,
@@ -267,6 +270,27 @@ export default {
     },
     locationSelect(location){
       this.user.residentialAddress = location;
+    },
+    async updatePassword(){
+      this.fieldWithError = '';
+      this.errorMessage = '';
+      try {
+        let data = {
+          newPassword: this.newPassword,
+        }
+        if(this.currentPassword) data.currentPassword = this.currentPassword;
+        await updatePasswordSchema.validate(data)
+        let result = await this.updateUserPassword(data);
+        if(result){
+          toast.success('Successfully updated password');
+        }
+      } catch (error) {
+        if(error.name === "ValidationError"){
+          this.fieldWithError = error.path;
+          this.errorMessage = error.message;
+          return;
+        }
+      }
     },
     async updateProfile(){
       try {

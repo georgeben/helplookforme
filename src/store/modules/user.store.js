@@ -42,7 +42,7 @@ const actions = {
 
   /**
    * Retrieves all the cases reported by the user
-   * @param {Object} context - The Vuex store instance 
+   * @param {Object} context - The Vuex store instance
    */
   async getUserCases({ commit }) {
     try {
@@ -52,7 +52,21 @@ const actions = {
     } catch (error) {
       return handleError(error);
     }
-  }
+  },
+
+  /**
+   * Updates a user's password
+   * @param {Object} context 
+   * @param {Object} payload 
+   */
+  async updateUserPassword(context, payload) {
+    try {
+      let result = await userEndpoint.updatePassword(payload);
+      return result.data.data;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
 };
 
 const getters = {

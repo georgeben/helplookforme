@@ -12,8 +12,14 @@ async function getUserCases() {
 async function updateUserProfile(payload) {
   return httpClient.put(endpoint, payload);
 }
+
+async function updatePassword(payload) {
+  return httpClient.put(`${endpoint}/password`, payload);
+}
+
 export default {
   getUserData,
   updateUserProfile,
   getUserCases,
+  updatePassword,
 };
