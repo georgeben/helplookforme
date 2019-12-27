@@ -1,6 +1,6 @@
-import Vue from 'vue'
 import store from '../store';
-import router from '../router'
+import router from '../router';
+import toast from './toast';
 export default function (error) {
   if (process.env.NODE_ENV !== 'production') {
     console.log(error)
@@ -8,15 +8,15 @@ export default function (error) {
   switch (error.response.status) {
     case 401:
       // Quietly log the user out and send the user to the login screen
+      toast.error(error.response.data.error);
       store.dispatch('Auth/logout');
+      if (router.currentRoute.path === '/auth/login') {
+        return;
+      }
       router.replace('/auth/login')
       break;
     default:
-      Vue.toasted.show(error.response.data.error, {
-        position: 'bottom-center',
-        duration: 2000,
-        type: 'error',
-      });
+      toast.error(error.response.data.error);
       return;
   }
 }
