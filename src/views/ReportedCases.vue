@@ -98,13 +98,13 @@
               {{ item.residentialAddress.formatted_address }}
             </span>
           </p>
-          <p v-if="item.physicalInformation.height">
+          <p v-if="item.physicalInformation && item.physicalInformation.height">
             <span class="text-gray-700 text-sm">
               Height:
             </span>
             <span class="font-semibold"> {{ item.physicalInformation.height }}m </span>
           </p>
-          <p v-if="item.physicalInformation.weight">
+          <p v-if="item.physicalInformation && item.physicalInformation.weight">
             <span class="text-gray-700 text-sm">
               Weight:
             </span>
@@ -118,7 +118,7 @@
               {{ item.language }}
             </span>
           </p>
-          <p v-if="item.physicalInformation.specialCharacteristics">
+          <p v-if="item.physicalInformation && item.physicalInformation.specialCharacteristics">
             <span class="text-gray-700 text-sm">
               Special characteristics:
             </span>
