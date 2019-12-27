@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Toasted from 'vue-toasted'
 import infiniteScroll from 'vue-infinite-scroll'
+import InstantSearch from 'vue-instantsearch'
 import { setAuthHeader } from './api/httpClient';
 import constants from './constants'
 import { storage } from './utils'
@@ -14,6 +15,7 @@ import AOS from 'aos';
 Vue.config.productionTip = false
 Vue.use(Toasted);
 Vue.use(infiniteScroll);
+Vue.use(InstantSearch);
 
 // Update the request auth header if the user ios logged in
 let loggedIn = store.getters['Auth/getLoginStatus'];

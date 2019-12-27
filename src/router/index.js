@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Auth from '../views/Auth.vue'
 import ReportCase from '../views/ReportCase'
 import BrowseCases from '../views/BrowseCases'
+import SearchPage from '../views/Search'
 import ViewCases from '../views/ViewCase'
 import UserProfile from '../views/UserProfile'
 import ReportedCases from '../views/ReportedCases'
@@ -60,20 +61,24 @@ const routes = [
     path: '/verify-email',
     component: VerifyEmail,
     meta: {
-      unverified: true
-    }
+      unverified: true,
+    },
   },
   {
     path: '/report-case',
     component: ReportCase,
     meta: {
       requiresAuth: true,
-      complete: true
+      complete: true,
     },
   },
   {
     path: '/cases',
     component: BrowseCases,
+  },
+  {
+    path: '/search',
+    component: SearchPage,
   },
   {
     path: '/cases/:slug',

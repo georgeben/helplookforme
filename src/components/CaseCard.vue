@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-white overflow-hidden shadow-lg md:w-30 mt-5 inline-block" :class="[page === 'search' ? 'w-full sm:w-47 sm:mx-2 mx-0 md:mx-2': page === 'suggestion'? 'w-full mx-0 md:w-full': 'w-3/4 mx-5']">
+  <div class="bg-white overflow-hidden shadow-lg md:w-30 mt-5 inline-block" 
+  :class="[page === 'browse' ? 'w-full sm:w-47 sm:mx-2 mx-0 md:mx-2': page === 'suggestion'? 'w-full mx-0 md:w-full': page === 'search' ? 'w-full md:w-full sm:w-full sm:w-47 sm:mx-2 mx-0 md:mx-2': 'w-3/4 mx-5']">
     <div class="pb-2/3 relative">
       <img
         class="h-full w-full object-cover absolute"
@@ -32,7 +33,7 @@ export default {
 
 <style>
 .case-description{
-  --max-lines: 3;
+  --max-lines: 2;
   --line-height: 1.5rem;
   max-height: calc(var(--line-height) * var(--max-lines));
   overflow: hidden;
