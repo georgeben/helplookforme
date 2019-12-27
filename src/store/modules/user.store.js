@@ -1,6 +1,8 @@
 import { userEndpoint } from '@/api';
-import { handleError } from '../../utils';
-import store from '../index'
+import { handleError, storage } from '../../utils';
+import { setAuthHeader } from '../../api/httpClient';
+import constants from '../../constants';
+import store from '../index';
 
 const initialState = () => (
   {
@@ -67,6 +69,24 @@ const actions = {
       return handleError(error);
     }
   },
+
+  // eslint-disable-next-line no-unused-vars
+  async updateUserEmail({ commit }, payload) {
+    try {
+      let result = await userEndpoint.updateEmail(payload);
+      // Set the user
+      const updatedUser = result.data.data.user;
+      // Update the current user in the auth store with the returned user
+      store.commit('Auth/setUser', updatedUser);
+      // Set the new token
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      setAuthHeader();
+
+      return updatedUser;
+    } catch (error) {
+      return handleError(error);
+    }
+  }
 };
 
 const getters = {
