@@ -41,6 +41,16 @@
               <ImagePicker v-model="photo" />
 
             </div>
+
+            <div class="mx-auto flex justify-center mt-4">
+              <vue-recaptcha 
+                ref="recaptcha"
+                sitekey="6LdAnsoUAAAAAIqbOU-QeGz3zZ6h3x3rV5s7uzxb" 
+                :loadRecaptchaScript="true" type="v2 Checkbox"
+                @verify="onCaptchaVerified"  @expired="onCaptchaExpired"
+                class="mx-auto block">
+              </vue-recaptcha>
+            </div>
           </form>
 
           <div class="flex justify-between mt-10">
@@ -48,6 +58,7 @@
               class="btn bg-gray-200 hover:bg-gray-300"
               v-if="formNumber - 1 > 0"
               @click="decrementFormNumber"
+              :disabled="formNumber === 4 && loading"
             >
               Back
             </button>
@@ -69,6 +80,7 @@
 
 <script>
 import ProgressBar from '../ProgressBar';
+import VueRecaptcha from 'vue-recaptcha';
 import PersonalInformation from './PersonalInformation';
 import PhysicalCharacteristics from './PhysicalCharacteristics';
 import EventDescription from './EventDescription';
@@ -108,6 +120,7 @@ export default {
     PhysicalCharacteristics,
     ImagePicker,
     SubmitButton,
+    VueRecaptcha,
   },
   data() {
     return {
@@ -120,10 +133,17 @@ export default {
       fieldWithError: '',
       errorMessage: '',
       loading: false,
+      recaptchaToken: '',
     };
   },
   methods: {
     ...mapActions('Case', ['submitCase', 'updateCase']),
+    onCaptchaVerified(recaptchaToken){
+      this.recaptchaToken = recaptchaToken;
+    },
+    onCaptchaExpired(){
+      this.$refs.recaptcha.reset();
+    },
     scrollUp(){
       window.scroll({
           top: 0,
@@ -172,12 +192,15 @@ export default {
       }
     },
     async submitForm() {
+      this.errorMessage = '';
       // Check if there was an image
       if(!this.photo.photoURL) return this.errorMessage = 'Please select an image';
 
       // TODO Check if the image contains a face
 
-      // TODO Might need to add CAPTCHA
+      if(!this.recaptchaToken){
+        return toast.error('Please confirm that you are not a robot 😉');
+      }
 
       this.loading = true;
       let physicalInformation = {};
@@ -190,6 +213,7 @@ export default {
       let nicknamesArr = this.personalInformation.nicknames.split(',');
 
       const caseData = new FormData();
+      caseData.append('recaptchaToken', this.recaptchaToken)
       caseData.append('fullname', this.personalInformation.fullname);
       if(nicknamesArr.length > 1) caseData.append('nicknames', JSON.stringify(nicknamesArr));
       caseData.append('age', parseInt(this.personalInformation.age));
@@ -211,6 +235,7 @@ export default {
       } else {
         result = await this.submitCase(caseData);
       }
+      this.$refs.recaptcha.reset();
 
       this.loading = false;
 

@@ -70,12 +70,14 @@ export default {
        // Set the data properties
        for(let field of dataFields){
          if(field === 'physicalInformation'){
-           Object.keys(this[field]).forEach(key => {
-            // If the property is in caseData, set it in the data field
-            if(caseData.physicalInformation[key]){
-              this[field][key] = caseData.physicalInformation[key]
-            }
-          })
+           if(caseData.physicalInformation){
+             Object.keys(this[field]).forEach(key => {
+              // If the property is in caseData, set it in the data field
+              if(caseData.physicalInformation[key]){
+                this[field][key] = caseData.physicalInformation[key]
+              }
+            })
+           }
          } else {
            Object.keys(this[field]).forEach(key => {
             // If the property is in caseData, set it in the data field
