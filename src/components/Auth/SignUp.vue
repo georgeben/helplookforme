@@ -48,7 +48,8 @@
               <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" 
               type="password" placeholder="Choose a password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
             </div>
-            <button class="btn btn-primary" type="button" @click="signUserUp">Sign up</button>          
+            <!-- <button class="btn btn-primary" type="button" @click="signUserUp">Sign up</button>           -->
+            <SubmitButton text="Sign up" @click.native="signUserUp" :loading="loading" />
           </div>
         </form>
 
@@ -89,9 +90,13 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { signUpSchema } from '../../schemas'
+import { signUpSchema } from '../../schemas';
+import SubmitButton from '../Forms/SubmitButton';
 export default {
   name: 'signup',
+  components: {
+    SubmitButton,
+  },
   data(){
     return {
       user: {
@@ -103,6 +108,7 @@ export default {
       errorMessage: '',
       showConfirmEmail: false,
       fieldWithError: '',
+      loading: false,
     }
   },
   methods: {
@@ -130,9 +136,10 @@ export default {
         if(this.errorMessage) return;
 
         await signUpSchema.validate(this.user, {abortEarly: true});
+        this.loading = true;
 
         let result = await this.signUp(this.user)
-        console.log({result});
+        this.loading = false;
         // If result is true, check if the newly signed up user has an email address
         if(result){
           if(result.email){
