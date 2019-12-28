@@ -4,6 +4,7 @@ import updateUserProfileSchema from './updateProfileSchema';
 import caseSchema from './caseSchema'
 import updatePasswordSchema from './updatePassword'
 import checkEmailSchema from './checkEmail'
+import newsletterSchema from './newsletterSchema'
 export {
   loginSchema,
   signUpSchema,
@@ -11,4 +12,5 @@ export {
   caseSchema,
   updatePasswordSchema,
   checkEmailSchema,
+  newsletterSchema,
 };

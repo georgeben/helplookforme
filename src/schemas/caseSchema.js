@@ -47,7 +47,7 @@ const personalInformation = yup.object().shape({
     .required(),
   gender: yup
     .string()
-    .required('please select a gender')
+    .required('Please select a gender')
     .oneOf(['MALE', 'FEMALE'], 'Please select a gender'),
 });
 
