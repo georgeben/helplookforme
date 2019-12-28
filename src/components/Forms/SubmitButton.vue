@@ -1,7 +1,7 @@
 <template>
   <button class="btn btn-primary inline-flex items-center" :disabled="loading" type="button">
     <div class="lds-ring" v-if="loading"><div></div><div></div><div></div><div></div></div>
-    {{text}}
+    <span class="block mx-auto">{{text}}</span>
   </button>
 </template>
 
