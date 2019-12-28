@@ -58,13 +58,8 @@
             >
               Next
             </button>
-            <button
-              class="btn btn-primary ml-auto"
-              @click="submitForm"
-              v-if="formNumber === 4"
-            >
-              Submit report
-            </button>
+    
+            <SubmitButton v-if="formNumber === 4" class="ml-auto" text="Submit report" @click.native="submitForm" :loading="loading"/>
           </div>
         </div>
       </div>
@@ -78,6 +73,7 @@ import PersonalInformation from './PersonalInformation';
 import PhysicalCharacteristics from './PhysicalCharacteristics';
 import EventDescription from './EventDescription';
 import ImagePicker from '../ImagePicker';
+import SubmitButton from '../SubmitButton';
 import { toast } from '../../../utils'
 import { caseSchema } from '../../../schemas';
 import { mapActions } from 'vuex';
@@ -111,6 +107,7 @@ export default {
     EventDescription,
     PhysicalCharacteristics,
     ImagePicker,
+    SubmitButton,
   },
   data() {
     return {
@@ -122,6 +119,7 @@ export default {
       progressValue: 10,
       fieldWithError: '',
       errorMessage: '',
+      loading: false,
     };
   },
   methods: {
@@ -180,6 +178,8 @@ export default {
       // TODO Check if the image contains a face
 
       // TODO Might need to add CAPTCHA
+
+      this.loading = true;
       let physicalInformation = {};
       Object.keys(this.physicalCharacteristics).forEach(key => {
         if(this.physicalCharacteristics[key]){
@@ -211,6 +211,8 @@ export default {
       } else {
         result = await this.submitCase(caseData);
       }
+
+      this.loading = false;
 
       if(result){
         // Send the person to the reported cases page
