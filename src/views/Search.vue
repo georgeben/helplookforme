@@ -91,7 +91,7 @@ export default {
 .ais-Hits-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .ais-Hits-item {

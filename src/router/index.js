@@ -12,6 +12,7 @@ import EditCase from '../views/EditCase';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 import ForgotPassword from '@/components/Auth/ForgotPassword.vue';
+import ResetPassword from '@/components/Auth/ResetPassword.vue';
 import VerifyEmail from '@/components/Auth/VerifyEmail.vue';
 import store from '../store'
 
@@ -51,6 +52,10 @@ const routes = [
       {
         path: 'forgot-password',
         component: ForgotPassword,
+      },
+      {
+        path: 'reset-password',
+        component: ResetPassword,
       },
     ],
     meta: {

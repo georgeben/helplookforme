@@ -1,6 +1,8 @@
 import { userEndpoint } from '@/api';
-import { handleError } from '../../utils';
-import store from '../index'
+import { handleError, storage } from '../../utils';
+import { setAuthHeader } from '../../api/httpClient';
+import constants from '../../constants';
+import store from '../index';
 
 const initialState = () => (
   {
@@ -42,13 +44,45 @@ const actions = {
 
   /**
    * Retrieves all the cases reported by the user
-   * @param {Object} context - The Vuex store instance 
+   * @param {Object} context - The Vuex store instance
    */
   async getUserCases({ commit }) {
     try {
       let result = await userEndpoint.getUserCases();
       commit('setUserCases', result.data.data.cases);
       return result.data.data.cases;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+
+  /**
+   * Updates a user's password
+   * @param {Object} context 
+   * @param {Object} payload 
+   */
+  async updateUserPassword(context, payload) {
+    try {
+      let result = await userEndpoint.updatePassword(payload);
+      return result.data.data;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async updateUserEmail({ commit }, payload) {
+    try {
+      let result = await userEndpoint.updateEmail(payload);
+      // Set the user
+      const updatedUser = result.data.data.user;
+      // Update the current user in the auth store with the returned user
+      store.commit('Auth/setUser', updatedUser);
+      // Set the new token
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      setAuthHeader();
+
+      return updatedUser;
     } catch (error) {
       return handleError(error);
     }

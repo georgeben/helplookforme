@@ -96,6 +96,7 @@
             sent to the email displayed below. Please check your email inbox to confirm your email. If no email has been sent to you, please re-enter
             your email.
           </p>
+          <p class="error-info mt-4" v-if="emailError">{{emailError}}</p>
           <div class="my-3">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
@@ -105,6 +106,7 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="emailError? ' border border-red-600': ''"
               id="email"
               type="text"
               :disabled="!editingEmail"
@@ -124,7 +126,7 @@
               class="btn"
               :class="editingEmail ? 'btn-primary':'bg-gray-200 hover:bg-gray-300'"
               type="button"
-              @click="editingEmail = !editingEmail"
+              @click="editingEmail? updateEmail(): editingEmail = !editingEmail"
             >
               {{editingEmail ? 'Update email' : 'Update email'}}
             </button>
@@ -133,6 +135,7 @@
 
         <form class="bg-white shadow-lg mt-4 p-4">
           <h1 class="text-xl font-semibold mb-3">Set password</h1>
+           <p class="error-info mt-4" v-if="passwordError">{{passwordError}}</p>
           <div class="mb-3">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
@@ -142,6 +145,7 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="passwordErrorField == 'currentPassword'? ' border border-red-600': ''"
               id="password"
               type="password"
               :disabled="!editingPassword"
@@ -158,6 +162,7 @@
             </label>
             <input
               class="border border-gray-400 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              :class="passwordErrorField == 'newPassword'? ' border border-red-600': ''"
               id="newPassword"
               type="password"
               placeholder="Choose a new password"
@@ -179,7 +184,7 @@
               class="btn"
               :class="editingPassword ? 'btn-primary':'bg-gray-200 hover:bg-gray-300'"
               type="button"
-              @click="editingPassword = !editingPassword"
+              @click="editingPassword? updatePassword(): editingPassword = !editingPassword"
             >
               {{editingPassword ? 'Update password' : 'Set password'}}
             </button>
@@ -193,7 +198,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { toast } from '../utils';
-import { updateUserProfileSchema } from '../schemas'
+import { updateUserProfileSchema, updatePasswordSchema, checkEmailSchema } from '../schemas'
 import LocationAutocomplete from '../components/Forms/LocationAutocomplete.vue';
 export default {
   name: 'user-profile',
@@ -211,6 +216,9 @@ export default {
       address: '',
       errorMessage: '',
       fieldWithError: '',
+      emailError: '',
+      passwordError: '',
+      passwordErrorField: ''
     };
   },
   computed: {
@@ -232,7 +240,7 @@ export default {
   },
   methods: {
     ...mapActions('Auth', ['getCurrentUserData']),
-    ...mapActions('User', ['updateUserProfile']),
+    ...mapActions('User', ['updateUserProfile', 'updateUserPassword', 'updateUserEmail']),
     initUser(userData){
       this.user = {
       ...userData,
@@ -257,6 +265,7 @@ export default {
     },
     cancelEmailEdit(){
       this.editingEmail = false;
+      this.emailError = '';
       // Reset the email
       this.user.email = this.currentUser.email;
     },
@@ -264,9 +273,49 @@ export default {
       this.editingPassword = false;
       this.newPassword = '';
       this.currentPassword = '';
+      this.passwordError = '';
+      this.passwordErrorField = '';
     },
     locationSelect(location){
       this.user.residentialAddress = location;
+    },
+    async updateEmail(){
+      this.emailError = '';
+      let data = { email: this.user.email}
+      try {
+        await checkEmailSchema.validate(data);
+        let result = await this.updateUserEmail({email: this.user.email})
+        if(result){
+          toast.success('Successfully updated email');
+        }
+        this.editingEmail = false;
+      } catch (error) {
+        if(error.name === "ValidationError"){
+          this.emailError = error.message;
+          return;
+        }
+      }
+    },
+    async updatePassword(){
+      this.passwordError = '';
+      this.passwordErrorField = '';
+      try {
+        let data = {
+          newPassword: this.newPassword,
+        }
+        if(this.currentPassword) data.currentPassword = this.currentPassword;
+        await updatePasswordSchema.validate(data)
+        let result = await this.updateUserPassword(data);
+        if(result){
+          toast.success('Successfully updated password');
+        }
+      } catch (error) {
+        if(error.name === "ValidationError"){
+          this.passwordErrorField = error.path;
+          this.passwordError = error.message;
+          return;
+        }
+      }
     },
     async updateProfile(){
       try {
