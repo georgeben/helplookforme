@@ -80,13 +80,14 @@
               Cancel
             </button>
             <button
-              class="btn"
-              :class="editingProfile ? 'btn-primary':'bg-gray-200 hover:bg-gray-300'"
+              class="btn bg-gray-200 hover:bg-gray-300"
               type="button"
-              @click="editingProfile ? updateProfile(): editingProfile = !editingProfile"
+              @click="editingProfile = !editingProfile"
+              v-if="!editingProfile"
             >
               {{editingProfile ? 'Update profile' : 'Edit profile'}}
             </button>
+            <SubmitButton v-if="editingProfile" text="Update profile" @click.native="updateProfile" :loading="profileLoading" />
           </div>
         </form>
 
@@ -123,13 +124,14 @@
               Cancel
             </button>
             <button
-              class="btn"
-              :class="editingEmail ? 'btn-primary':'bg-gray-200 hover:bg-gray-300'"
+              class="btn bg-gray-200 hover:bg-gray-300"
               type="button"
-              @click="editingEmail? updateEmail(): editingEmail = !editingEmail"
+              @click="editingEmail = !editingEmail"
+              v-if="!editingEmail"
             >
-              {{editingEmail ? 'Update email' : 'Update email'}}
+              Update email
             </button>
+            <SubmitButton v-if="editingEmail" text="Update email" @click.native="updateEmail" :loading="emailLoading" />
           </div>
         </form>
 
@@ -181,13 +183,14 @@
               Cancel
             </button>
             <button
-              class="btn"
-              :class="editingPassword ? 'btn-primary':'bg-gray-200 hover:bg-gray-300'"
+              class="btn bg-gray-200 hover:bg-gray-300"
               type="button"
-              @click="editingPassword? updatePassword(): editingPassword = !editingPassword"
+              @click="editingPassword = !editingPassword"
+              v-if="!editingPassword"
             >
-              {{editingPassword ? 'Update password' : 'Set password'}}
+              Set password
             </button>
+            <SubmitButton v-if="editingPassword" text="Update password" @click.native="updatePassword" :loading="passwordLoading" />
           </div>
         </form>
       </div>
@@ -200,16 +203,20 @@ import { mapState, mapActions } from 'vuex';
 import { toast } from '../utils';
 import { updateUserProfileSchema, updatePasswordSchema, checkEmailSchema } from '../schemas'
 import LocationAutocomplete from '../components/Forms/LocationAutocomplete.vue';
+import SubmitButton from '../components/Forms/SubmitButton.vue';
 export default {
   name: 'user-profile',
   components: {
     LocationAutocomplete,
+    SubmitButton,
   },
   data() {
     return {
       user: {},
       editingProfile: false,
+      profileLoading: false,
       editingEmail: false,
+      emailLoading: false,
       editingPassword: false,
       newPassword: '',
       currentPassword: '',
@@ -218,7 +225,8 @@ export default {
       fieldWithError: '',
       emailError: '',
       passwordError: '',
-      passwordErrorField: ''
+      passwordErrorField: '',
+      passwordLoading: false,
     };
   },
   computed: {
@@ -284,8 +292,11 @@ export default {
       let data = { email: this.user.email}
       try {
         await checkEmailSchema.validate(data);
+        this.emailLoading = true;
         let result = await this.updateUserEmail({email: this.user.email})
+        this.emailLoading = false;
         if(result){
+          this.editingEmail = false;
           toast.success('Successfully updated email');
         }
         this.editingEmail = false;
@@ -305,8 +316,13 @@ export default {
         }
         if(this.currentPassword) data.currentPassword = this.currentPassword;
         await updatePasswordSchema.validate(data)
+        this.passwordLoading = true;
         let result = await this.updateUserPassword(data);
+        this.passwordLoading = false;
         if(result){
+          this.editingPassword = false;
+          this.currentPassword = '';
+          this.newPassword = '';
           toast.success('Successfully updated password');
         }
       } catch (error) {
@@ -338,7 +354,11 @@ export default {
         if(this.errorMessage) return;
         await updateUserProfileSchema.validate(this.user, {abortEarly: true});
 
+        this.profileLoading = true;
+
         let result = await this.updateUserProfile(this.user);
+        this.profileLoading = false;
+        this.editingProfile = false;
         if(result)toast.success('Successfully updated profile');
         
       } catch (error) {

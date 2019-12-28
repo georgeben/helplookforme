@@ -113,7 +113,7 @@
                 {{ caseData.language }}
               </span>
             </p>
-            <p v-if="caseData.physicalInformation.specialCharacteristics">
+            <p v-if="caseData.physicalInformation && caseData.physicalInformation.specialCharacteristics">
               <span class="text-gray-700 text-sm">
                 Special characteristics:
               </span>

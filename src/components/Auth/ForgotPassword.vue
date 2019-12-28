@@ -27,7 +27,7 @@
               :class="fieldWithError == 'email'? ' border border-red-600': ''"
                 type="email" placeholder="Enter your email" v-model="email">
             </div>
-            <button class="btn btn-primary" @click="forgotPassword" type="button">Submit</button>          
+            <SubmitButton @click.native="forgotPassword" :loading="loading" />
           </div>
         </form>
       </div>
@@ -38,15 +38,20 @@
 <script>
 import { authEndpoint } from '../../api';
 import { handleError } from '../../utils';
+import SubmitButton from '../Forms/SubmitButton.vue';
 import * as yup from 'yup';
 export default {
   name:  'forgot-password',
+  components: {
+    SubmitButton,
+  },
   data(){
     return {
       email: '',
       emailSent: false,
       fieldWithError: '',
       errorMessage: '',
+      loading: false,
     }
   },
   methods: {
@@ -58,7 +63,9 @@ export default {
           email: yup.string().email('Please enter a valid email').required('Please enter your email'),
         })
         await schema.validate({email: this.email});
+        this.loading = true;
         let result = await authEndpoint.forgotPassword(this.email);
+        this.loading = false;
         if(result.data.data.message){
           this.emailSent = true;
         }
@@ -68,6 +75,7 @@ export default {
           this.errorMessage = error.message;
           return;
         }
+        this.loading = false;
         return handleError(error);
       }
     }

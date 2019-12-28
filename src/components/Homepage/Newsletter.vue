@@ -36,13 +36,10 @@
         </div>
 
         <div class="mt-6 text-center">
-          <button
-            type="button"
-            class="btn btn-primary w-full sm:w-1/4 sm:ml-8 bg-primary-dark rounded-sm shadow-xl"
-            @click="subscribe"
-          >
-            Subscribe
-          </button>
+          <SubmitButton class="w-full sm:w-1/4 sm:ml-8 bg-primary-dark rounded-sm shadow-xl"
+            text="Subscribe"
+            @click.native="subscribe"
+            :loading="loading" />
         </div>
       </form>
     </div>
@@ -51,6 +48,7 @@
 
 <script>
 import LocationAutocomplete from '../Forms/LocationAutocomplete.vue';
+import SubmitButton from '../Forms/SubmitButton';
 import { newsletterSchema } from '../../schemas';
 import { handleError, toast } from '../../utils';
 import { newsletterEndpoint } from '../../api'
@@ -58,6 +56,7 @@ export default {
   name: 'newsletter',
   components: {
     LocationAutocomplete,
+    SubmitButton,
   },
   data() {
     return {
@@ -71,6 +70,7 @@ export default {
       frequency: 'DAILY',
       errorMessage: '',
       fieldWithError: '',
+      loading: false,
     };
   },
   methods: {
@@ -87,18 +87,20 @@ export default {
           frequency: this.frequency
         }
         await newsletterSchema.validate(data , {abortEarly: true});
+        this.loading = true;
         let result = await newsletterEndpoint.subscribe(data);
+        this.loading = false;
         if(result.data.data){
           toast.success('Thank you for subscribing to our newsletter ❤️')
         }
 
       } catch (error) {
-        console.log(error);
         if(error.name === "ValidationError"){
           this.fieldWithError = error.path;
           this.errorMessage = error.message;
           return;
         }
+        this.loading = false;
         return handleError(error);
       }
     }

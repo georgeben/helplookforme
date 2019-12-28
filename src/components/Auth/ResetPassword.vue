@@ -20,7 +20,7 @@
             type="password" placeholder="Type in the password again" :class="fieldWithError == 'confirmPassword'? ' border border-red-600': ''">
           </div>
 
-           <button class="btn btn-primary" type="button" @click="resetPassword">Sign up</button>  
+           <SubmitButton @click.native="resetPassword" text="Reset password" :loading="loading" />
         </form>
       </div>
     </div>
@@ -28,10 +28,14 @@
 </template>
 
 <script>
+import SubmitButton from '../Forms/SubmitButton';
 import { authEndpoint } from '../../api';
 import { handleError, toast } from '../../utils'
 export default {
   name: 'reset-password',
+  components: {
+    SubmitButton,
+  },
   created(){
     const token = this.$route.query.token;
     if(!token){
@@ -44,6 +48,7 @@ export default {
       confirmPassword: '',
       fieldWithError: '',
       errorMessage: '',
+      loading: false,
     }
   },
   methods: {
@@ -65,12 +70,15 @@ export default {
 
       try {
         const token = this.$route.query.token;
+        this.loading = true;
         let result = await authEndpoint.resetPassword({password: this.newPassword, token, });
+        this.loading = false;
         if(result.data.data.message){ 
           toast.success('Successfully reset password');
           return this.$router.replace('/auth')
         }
       } catch (error) {
+        this.loading = false;
         handleError(error);
         return this.$router.replace('/');
       }
