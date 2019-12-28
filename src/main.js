@@ -9,6 +9,7 @@ import { setAuthHeader } from './api/httpClient';
 import constants from './constants'
 import { storage } from './utils'
 import './assets/css/tailwind.css'
+import '../node_modules/nprogress/nprogress.css';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
 

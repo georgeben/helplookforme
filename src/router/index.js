@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import NProgress from 'nprogress';
 import Home from '../views/Home.vue'
 import Auth from '../views/Auth.vue'
 import ReportCase from '../views/ReportCase'
@@ -43,18 +44,22 @@ const routes = [
       },
       {
         path: 'login',
+        name: 'login',
         component: Login,
       },
       {
         path: 'signup',
+        name: 'signup',
         component: Signup,
       },
       {
         path: 'forgot-password',
+        name: 'forgot-password',
         component: ForgotPassword,
       },
       {
         path: 'reset-password',
+        name: 'reset-password',
         component: ResetPassword,
       },
     ],
@@ -64,6 +69,7 @@ const routes = [
   },
   {
     path: '/verify-email',
+    name: 'verify-email',
     component: VerifyEmail,
     meta: {
       unverified: true,
@@ -71,6 +77,7 @@ const routes = [
   },
   {
     path: '/report-case',
+    name: 'report-case',
     component: ReportCase,
     meta: {
       requiresAuth: true,
@@ -79,18 +86,22 @@ const routes = [
   },
   {
     path: '/cases',
+    name: 'cases',
     component: BrowseCases,
   },
   {
     path: '/search',
+    name: 'search',
     component: SearchPage,
   },
   {
     path: '/cases/:slug',
+    name: 'view-case',
     component: ViewCases,
   },
   {
     path: '/profile',
+    name: 'profile',
     component: UserProfile,
     meta: {
       requiresAuth: true,
@@ -98,6 +109,7 @@ const routes = [
   },
   {
     path: '/reported-cases',
+    name: 'reported-cases',
     component: ReportedCases,
     meta: {
       requiresAuth: true,
@@ -105,6 +117,7 @@ const routes = [
   },
   {
     path: '/edit/:caseSlug',
+    name: 'edit-case',
     component: EditCase,
     meta: {
       requiresAuth: true,
@@ -154,6 +167,21 @@ router.beforeEach((to, from, next) => {
     }
   }
   next()
+});
+
+// eslint-disable-next-line no-unused-vars
+router.beforeResolve((to, from, next) => {
+  if (to.name) {
+    // eslint-disable-next-line no-undef
+    NProgress.start();
+  }
+  next();
+});
+
+// eslint-disable-next-line no-unused-vars
+router.afterEach((to, from) => {
+  // eslint-disable-next-line no-undef
+  NProgress.done();
 })
 
 export default router
