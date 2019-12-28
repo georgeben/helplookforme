@@ -22,7 +22,7 @@
               </label>
               <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
             </div>
-            <button class="btn btn-primary" type="button" @click="login">Log in</button>       
+            <SubmitButton text="Log in" :loading="loading" @click.native="login"/>     
             <router-link class="text-primary-dark ml-6 text-sm" to="forgot-password">Forgot password?</router-link>
           </div>
         </form>
@@ -55,7 +55,8 @@
 import { mapActions } from 'vuex';
 import FacebookLogin from './FacebookLogin';
 import TwitterLogin from './TwitterLogin';
-import { loginSchema } from '../../schemas'
+import { loginSchema } from '../../schemas';
+import SubmitButton from '../Forms/SubmitButton';
 export default {
   name: 'login',
   data(){
@@ -66,11 +67,13 @@ export default {
       },
       fieldWithError: '',
       errorMessage: '',
+      loading: false,
     }
   },
   components: {
     FacebookLogin,
-    TwitterLogin
+    TwitterLogin,
+    SubmitButton,
   },
   methods: {
     ...mapActions('Auth', ['localLogIn']),
@@ -79,8 +82,9 @@ export default {
         this.fieldWithError = '';
         this.errorMessage = '';
         await loginSchema.validate(this.user, {abortEarly: true});
-
+        this.loading = true;
         let result = await this.localLogIn(this.user);
+        this.loading = false;
         if(result){
           if(!this.$route.query.redirect){
             this.$router.replace('/')
