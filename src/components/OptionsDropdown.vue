@@ -45,7 +45,7 @@
     <button v-if="isOpen" @click="isOpen = false" class="fixed inset-0 w-full h-full bg-black opacity-5 cursor-default" tabindex="-1"></button>
     <div class="bg-white py-2 absolute right-0 shadow-lg w-32 text-center" v-if="isOpen">
       <router-link :to="`edit/${slug}`" class="block px-3 hover:text-gray-600 mx-auto my-2">Edit Case</router-link>
-      <button class="block px-3 hover:text-red-500 mx-auto my-2 text-red-600">
+      <button class="block px-3 hover:text-red-500 mx-auto my-2 text-red-600" @click="closeCase">
         Close Case
       </button>
     </div>
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'options-dropdown',
   props:['slug'],
@@ -62,9 +63,20 @@ export default {
     }
   },
   methods: {
+    ...mapActions('Case', ['updateCaseStatus']),
+    ...mapActions('User', ['getUserCases']),
     handleEscape(e){
       if(e.key === 'Esc' || e.key === 'Escape'){
         this.isOpen = false;
+      }
+    },
+    async closeCase(){
+      if(confirm('Are you sure you want to close this case?')){
+        await this.updateCaseStatus({
+          slug: this.slug,
+          solved: true
+        });
+        this.getUserCases();
       }
     }
   },

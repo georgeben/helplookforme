@@ -1,7 +1,7 @@
 <template>
   <section>
-    <div class="container mt-20" v-if="reportedCases.length > 0">
-      <div class="case bg-white shadow-lg p-6 sm:w-4/6 lg:flex lg:items-start mx-auto mb-6" v-for="item in reportedCases" :key="item.slug">
+    <div class="container mt-20" v-if="userCases.length > 0">
+      <div class="case bg-white shadow-lg p-6 sm:w-4/6 lg:flex lg:items-start mx-auto mb-6" v-for="item in userCases" :key="item.slug">
         <div class="lg:w-1/2">
           <div>
             <div class="flex justify-between items-center mb-6">
@@ -154,7 +154,7 @@
 
 <script>
 import OptionsDropdown from '../components/OptionsDropdown.vue';
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'reported-cases',
@@ -163,13 +163,14 @@ export default {
   },
   async created(){
     // Fetch the latest cases
-    let cases = await this.getUserCases();
-    this.reportedCases = cases;
+    await this.getUserCases();
   },
   data() {
     return {
-      reportedCases: [],
     };
+  },
+  computed: {
+    ...mapState('User', ['userCases'])
   },
   methods: {
     ...mapActions('User', ['getUserCases']),

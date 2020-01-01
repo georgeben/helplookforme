@@ -3,7 +3,7 @@ import router from '../router';
 import toast from './toast';
 export default function (error) {
   if (process.env.NODE_ENV !== 'production') {
-    console.log(error)
+    console.log(error);
   }
   switch (error.response.status) {
     case 401:
@@ -15,6 +15,8 @@ export default function (error) {
       }
       router.replace('/auth/login')
       break;
+    case 404:
+      return toast.error('Something wen\'t wrong. The resource you are requesting for isn\'t found')
     default:
       toast.error(error.response.data.error);
       return;

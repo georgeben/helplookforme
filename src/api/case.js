@@ -38,9 +38,19 @@ async function getCases(offset, limit) {
   return httpClient.get(`${endpoint}?offset=${offset}&limit=${limit}`);
 }
 
+/**
+ * Updates the status of a reported case
+ * @param {String} slug - The slug of the case to update
+ * @param {Boolean} solved - The status of the case
+ */
+async function updateCaseStatus(slug, solved){
+  return httpClient.put(`${endpoint}/${slug}/status`, { solved, })
+}
+
 export default {
   submitCase,
   getCase,
   updateCase,
   getCases,
+  updateCaseStatus
 };

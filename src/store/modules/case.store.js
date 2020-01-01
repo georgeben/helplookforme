@@ -52,6 +52,20 @@ const actions = {
   },
 
   /**
+   * 
+   * @param {Object} context - The vuex store instance 
+   * @param {Object} data - Request data
+   */
+  async updateCaseStatus(context, { slug, solved}){
+    try {
+      let result = await caseEndpoint.updateCaseStatus(slug, solved);
+      return result;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+
+  /**
    *
    * @param {Object} param0 - The Vuex store instance
    * @param {Object} payload - Object containing the offset and limit of the cases to fetch
