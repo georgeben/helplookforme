@@ -2,15 +2,17 @@
   <section class="bg-gray-100 pt-10">
     <div class="container">
       <div class="mt-10 sm:flex sm:justify-between sm:items-start">
-        <div class="case bg-white shadow-lg p-8 sm:w-4/6 lg:flex">
-          <div class="lg:w-1/2 mr-4">
+        <div class="case bg-white shadow-lg p-4 sm:w-4/6 lg:flex">
+          <div class="lg:w-1/2 lg:mr-4">
             <div class="case-photo">
               <h1 class="text-xl md:text-xl font-semibold mb-4">{{ caseData.fullname }}</h1>
-              <img
-                class="h-48 w-full object-contain mb-4"
-                :src="caseData.photoURL"
-                alt="Missing person photo"
-              />
+              <div class=" pb-11/12 relative mb-4">
+                <img
+                  class="h-full w-full object-cover absolute"
+                  :src="caseData.photoURL"
+                  alt="Missing person photo"
+                />
+              </div>
             </div>
 
             <div
@@ -44,7 +46,7 @@
             </div>
           </div>
 
-          <div class="case-information leading-loose lg:w-1/2">
+          <div class="case-information leading-loose lg:w-1/2 lg:mt-8 lg:p-4">
             <p v-if="caseData.nicknames && caseData.nicknames.length > 0">
               <span class="text-gray-700 text-sm">Nicknames: </span>
               <span
