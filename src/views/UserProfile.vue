@@ -93,7 +93,7 @@
 
         <form class="bg-white shadow-lg mt-4 p-4">
           <h1 class="text-xl font-semibold">Account settings</h1>
-          <p class="text-red-500 text-sm mt-3" v-if=" user.email && !user.verifiedEmail">Your email has not been verified yet. A email confirmation has been 
+          <p class="text-red-500 text-sm mt-3" v-if=" currentUser.email && !currentUser.verifiedEmail">Your email has not been verified yet. A email confirmation has been 
             sent to the email displayed below. Please check your email inbox to confirm your email. If no email has been sent to you, please re-enter
             your email.
           </p>
@@ -299,7 +299,6 @@ export default {
           this.editingEmail = false;
           toast.success('Successfully updated email');
         }
-        this.editingEmail = false;
       } catch (error) {
         if(error.name === "ValidationError"){
           this.emailError = error.message;

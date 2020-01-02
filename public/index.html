@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
     <title>client</title>
   </head>
   <body>
@@ -15,7 +16,18 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCxExDtVmUoKn1B18Vs0ULNKq0qu6hmsM&libraries=places"></script>
+    <script src="https://apis.google.com/js/platform.js"></script>
     <script src="https://platform.twitter.com/widgets.js"></script>
     <script src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v5.0&appId=430025197616958&autoLogAppEvents=1"></script>
+    <script>
+      window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '430025197616958',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v5.0'
+      });
+    };
+    </script>
   </body>
 </html>

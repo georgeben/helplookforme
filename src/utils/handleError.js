@@ -16,7 +16,7 @@ export default function (error) {
       router.replace('/auth/login')
       break;
     case 404:
-      return toast.error('Something wen\'t wrong. The resource you are requesting for isn\'t found')
+      return toast.error(error.response.data.error || 'Something wen\'t wrong. The resource you are requesting for isn\'t found')
     default:
       toast.error(error.response.data.error);
       return;
