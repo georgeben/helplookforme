@@ -15,6 +15,7 @@ import Signup from '@/components/Auth/SignUp.vue'
 import ForgotPassword from '@/components/Auth/ForgotPassword.vue';
 import ResetPassword from '@/components/Auth/ResetPassword.vue';
 import VerifyEmail from '@/components/Auth/VerifyEmail.vue';
+import TwitterCallback from '@/components/Auth/TwitterCallback.vue';
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -24,15 +25,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
     path: '/auth',
@@ -46,6 +38,11 @@ const routes = [
         path: 'login',
         name: 'login',
         component: Login,
+      },
+      {
+        path: 'login/twitter',
+        name: 'twitter-callback',
+        component: TwitterCallback,
       },
       {
         path: 'signup',

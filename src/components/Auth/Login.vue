@@ -20,7 +20,7 @@
               <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                 Password
               </label>
-              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Choose a password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
+              <input v-model="user.password" class="border border-gray-400 w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Enter password" :class="fieldWithError == 'password'? ' border border-red-600': ''">
             </div>
             <SubmitButton text="Log in" :loading="loading" @click.native="login"/>     
             <router-link class="text-primary-dark ml-6 text-sm" to="forgot-password">Forgot password?</router-link>

@@ -27,14 +27,36 @@ const mutations = {
 
 const actions = {
   /**
-   * Logs a user in via Facebook, Twitter and google
-   * @param {String} provider - The oauth provider used for logging in
+   * Retrieves the twitter redirect URL
    */
-  async oauthLogin(context, { provider }) {
-    console.log({ provider });
-    // Call the auth api to send the request
-    if (provider === 'twitter') {
-      await authEndpoint.twitterSignIn();
+  // eslint-disable-next-line no-unused-vars
+  async getTwitterRedirectURL(context) {
+    try {
+      let result = await authEndpoint.getTwitterRedirectURL();
+      return result;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+  
+  /**
+   * 
+   * @param {Object} param0 - The vuex store instance
+   * @param {Object} payload - The request data
+   */
+  async twitterSignIn({ commit }, payload) {
+    try {
+      let result = await authEndpoint.twitterSignIn(payload);
+      const user = result.data.data.user;
+      commit('setUser', user);
+      commit('updateLoggedInStatus', true);
+
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      setAuthHeader();
+
+      return user;
+    } catch (error) {
+      return handleError(error);
     }
   },
 

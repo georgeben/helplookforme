@@ -31,7 +31,6 @@ export default {
   mounted() {
     // eslint-disable-next-line no-undef
     FB.getLoginStatus(function(response) {
-      console.log({ response });
       // Check if the user is logged in or not
       if (response.status === 'connected') {
         // the user is logged in
