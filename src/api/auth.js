@@ -10,6 +10,14 @@ async function googleSignIn(payload) {
 }
 
 /**
+ * Send request for facebook login
+ * @param {Object} payload - The user's facebook credentials
+ */
+async function facebookSignIn(payload) {
+  return httpClient.post(`${endpoint}/facebook`, payload);
+}
+
+/**
  * Send request for user login
  * @param {Object} payload - Request data
  * @returns {Promise} - A promise which resolves to the server response
@@ -61,4 +69,5 @@ export default {
   forgotPassword,
   resetPassword,
   googleSignIn,
+  facebookSignIn,
 };

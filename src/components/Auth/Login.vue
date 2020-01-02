@@ -32,9 +32,9 @@
         </div>
 
         <div class="button-group mt-4 text-center">
-          <GoogleSignIn @done="onUserSignedIn" />
+          <GoogleSignIn @done="loginWithGoogle" />
 
-          <FacebookLogin />
+          <FacebookLogin @done="loginWithFacebook" />
           <TwitterLogin />
 
         </div>
@@ -71,14 +71,23 @@ export default {
     GoogleSignIn,
   },
   methods: {
-    ...mapActions('Auth', ['localLogIn', 'googleSignIn']),
-    async onUserSignedIn(user){
+    ...mapActions('Auth', ['localLogIn', 'googleSignIn', 'facebookSignIn']),
+    signInSuccess(){
+      if(!this.$route.query.redirect){
+        this.$router.replace('/')
+      }
+      this.$router.replace(this.$route.query.redirect)
+    },
+    async loginWithGoogle(user){
       const result = await this.googleSignIn(user.Zi.id_token)
       if(result){
-        if(!this.$route.query.redirect){
-          this.$router.replace('/')
-        }
-        this.$router.replace(this.$route.query.redirect)
+        this.signInSuccess();
+      }
+    },
+    async loginWithFacebook(response){
+      const result = await this.facebookSignIn(response.authResponse.accessToken);
+      if(result){
+        this.signInSuccess();
       }
     },
     async login(){
@@ -90,10 +99,7 @@ export default {
         let result = await this.localLogIn(this.user);
         this.loading = false;
         if(result){
-          if(!this.$route.query.redirect){
-            this.$router.replace('/')
-          }
-          this.$router.replace(this.$route.query.redirect)
+          this.signInSuccess();
         }
         
       } catch (error) {
