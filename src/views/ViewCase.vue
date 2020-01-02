@@ -45,7 +45,7 @@
           </div>
 
           <div class="case-information leading-loose lg:w-1/2">
-            <p v-if="caseData.nicknames.length > 0">
+            <p v-if="caseData.nicknames && caseData.nicknames.length > 0">
               <span class="text-gray-700 text-sm">Nicknames: </span>
               <span
                 class="font-semibold"
@@ -174,14 +174,19 @@ export default {
   async created(){
     // Check if the case is in the store, If it isn't fetch it from the API
     let caseSlug = this.$route.params.slug;
-    let caseData = this.getCaseBySlug(caseSlug);
-    if(caseData){
-      return this.caseData = caseData
-    }
     // Fetch case from API
     try {
-      let result = await caseEndpoint.getCase(caseSlug);
-      this.caseData = result.data.data.case;
+      let caseData = this.getCaseBySlug(caseSlug);
+      if(caseData){
+        this.caseData = caseData
+      } else {
+        let result = await caseEndpoint.getCase(caseSlug);
+        this.caseData = result.data.data.case;
+      }
+
+      // Get related cases
+      const response = await caseEndpoint.getRelatedCases(caseSlug);
+      this.relatedCases = response.data.data.cases;
       
     } catch (error) {
       return handleError(error);
@@ -193,80 +198,7 @@ export default {
   data() {
     return {
       caseData: {},
-      relatedCases: [
-        {
-          _id: '5de901c625e6c11a822c764b',
-          nicknames: ['God win'],
-          solved: false,
-          fullname: 'Erema Test',
-          age: 23,
-          gender: 'FEMALE',
-          language: 'Ijaw',
-          addressLastSeen: 'Banana Island',
-          state: 'Bayelsa',
-          country: 'Nigeria',
-          dateLastSeen: '2019-11-29T23:00:00.000Z',
-          reportedBy: '5dda966fdd944118fd29d5f2',
-          photoURL:
-            'https://res.cloudinary.com/georgeben/image/upload/v1575551429/report_missing_people/case_photos/m80ugtw49rzhwch0bf9d.jpg',
-          cloudinaryPhotoID:
-            'report_missing_people/case_photos/m80ugtw49rzhwch0bf9d',
-          createdAt: '2019-12-05T13:10:30.545Z',
-          updatedAt: '2019-12-05T13:10:30.545Z',
-          description:
-            'Erema Woman aka God win who is a 23 year old got missing on Sat Nov 30 2019 00:00:00 GMT+0100 (West Africa Standard Time) at Banana Island, in Bayelsa, Nigeria.',
-          slug: 'erema-test',
-          __v: 0,
-        },
-        {
-          _id: '5de901c625e6c11a822c764b',
-          nicknames: ['God win'],
-          solved: false,
-          fullname: 'Erema Woman',
-          age: 23,
-          gender: 'FEMALE',
-          language: 'Ijaw',
-          addressLastSeen: 'Banana Island',
-          state: 'Bayelsa',
-          country: 'Nigeria',
-          dateLastSeen: '2019-11-29T23:00:00.000Z',
-          reportedBy: '5dda966fdd944118fd29d5f2',
-          photoURL:
-            'https://res.cloudinary.com/georgeben/image/upload/v1575551429/report_missing_people/case_photos/m80ugtw49rzhwch0bf9d.jpg',
-          cloudinaryPhotoID:
-            'report_missing_people/case_photos/m80ugtw49rzhwch0bf9d',
-          createdAt: '2019-12-05T13:10:30.545Z',
-          updatedAt: '2019-12-05T13:10:30.545Z',
-          description:
-            'Erema Woman aka God win who is a 23 year old got missing on Sat Nov 30 2019 00:00:00 GMT+0100 (West Africa Standard Time) at Banana Island, in Bayelsa, Nigeria.',
-          slug: 'erema-woman',
-          __v: 0,
-        },
-        {
-          _id: '5de901c625e6c11a822c764b',
-          nicknames: ['God win'],
-          solved: false,
-          fullname: 'Erema Woman',
-          age: 23,
-          gender: 'FEMALE',
-          language: 'Ijaw',
-          addressLastSeen: 'Banana Island',
-          state: 'Bayelsa',
-          country: 'Nigeria',
-          dateLastSeen: '2019-11-29T23:00:00.000Z',
-          reportedBy: '5dda966fdd944118fd29d5f2',
-          photoURL:
-            'https://res.cloudinary.com/georgeben/image/upload/v1575551429/report_missing_people/case_photos/m80ugtw49rzhwch0bf9d.jpg',
-          cloudinaryPhotoID:
-            'report_missing_people/case_photos/m80ugtw49rzhwch0bf9d',
-          createdAt: '2019-12-05T13:10:30.545Z',
-          updatedAt: '2019-12-05T13:10:30.545Z',
-          description:
-            'Erema Woman aka God win who is a 23 year old got missing on Sat Nov 30 2019 00:00:00 GMT+0100 (West Africa Standard Time) at Banana Island, in Bayelsa, Nigeria.',
-          slug: 'erema-woman',
-          __v: 0,
-        },
-      ],
+      relatedCases: [],
     };
   },
   methods: {

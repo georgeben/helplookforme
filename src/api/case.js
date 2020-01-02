@@ -47,10 +47,19 @@ async function updateCaseStatus(slug, solved){
   return httpClient.put(`${endpoint}/${slug}/status`, { solved, })
 }
 
+/**
+ * Retrieves cases related to a case
+ * @param {String} slug - The slug of the case
+ */
+async function getRelatedCases(slug) {
+  return httpClient.get(`${endpoint}/${slug}/related`);
+}
+
 export default {
   submitCase,
   getCase,
   updateCase,
   getCases,
-  updateCaseStatus
+  updateCaseStatus,
+  getRelatedCases,
 };

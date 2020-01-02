@@ -14,9 +14,11 @@
             <router-link to="/report-case">
               <button class="btn btn-primary mr-4 rounded-sm shadow-lg my-2">Report a case</button>
             </router-link>
-            <button class="btn bg-gray-200 hover:bg-gray-400 mr-4">
-              <router-link to="/cases">Browse cases</router-link>
-            </button>
+            <router-link to="/cases">
+              <button class="btn bg-gray-200 hover:bg-gray-400 mr-4">
+                Browse cases
+              </button>
+            </router-link>
           </div>
         </div>
       </div>
