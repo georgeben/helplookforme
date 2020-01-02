@@ -37,6 +37,22 @@ const actions = {
       await authEndpoint.twitterSignIn();
     }
   },
+
+  async googleSignIn({ commit }, id_token) {
+    try {
+      let result = await authEndpoint.googleSignIn({ id_token });
+      commit('setUser', result.data.data.user);
+      commit('updateLoggedInStatus', true);
+
+      storage.updateState(constants.TOKEN, result.data.data.token);
+      setAuthHeader();
+
+      return result.data.data.user;
+
+    } catch (error) {
+      return handleError(error);
+    }
+  },
   async localLogIn({ commit }, payload) {
     try {
       // Call the login API endpoint

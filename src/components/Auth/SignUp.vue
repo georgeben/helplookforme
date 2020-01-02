@@ -54,10 +54,7 @@
         </form>
 
         <div class="button-group mt-10 text-center" v-else>
-          <button class=" w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
-            <svg class=" h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3"><path d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z" fill="#4285f4"/><path d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z" fill="#34a853"/><path d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z" fill="#fbbc04"/><path d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z" fill="#ea4335"/></svg>
-            <span class="text-gray-600 mx-auto">Sign up with Google</span>
-          </button>
+          <GoogleSignIn text="Sign up with Google" @done="onUserSignedIn" />
 
           <button class="w-11/12 border border-gray-400 hover:border-gray-500 py-2 px-4 mb-4 inline-flex items-center">
             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455.73 455.73"><path d="M0 0v455.73h242.704V279.691h-59.33v-71.864h59.33v-60.353c0-43.893 35.582-79.475 79.475-79.475h62.025v64.622h-44.382c-13.947 0-25.254 11.307-25.254 25.254v49.953h68.521l-9.47 71.864h-59.051V455.73H455.73V0H0z" fill="#3a559f"/></svg>
@@ -92,10 +89,13 @@
 import { mapActions } from 'vuex';
 import { signUpSchema } from '../../schemas';
 import SubmitButton from '../Forms/SubmitButton';
+import GoogleSignIn from './GoogleSignIn';
+
 export default {
   name: 'signup',
   components: {
     SubmitButton,
+    GoogleSignIn
   },
   data(){
     return {
@@ -112,7 +112,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Auth', ['signUp']),
+    ...mapActions('Auth', ['signUp', 'googleSignIn']),
     async signUserUp(){
       try {
         this.errorMessage = '';
@@ -157,6 +157,15 @@ export default {
         }
       }
       
+    },
+     async onUserSignedIn(user){
+      const result = await this.googleSignIn(user.Zi.id_token)
+      if(result){
+        if(!this.$route.query.redirect){
+          this.$router.replace('/')
+        }
+        this.$router.replace(this.$route.query.redirect)
+      }
     },
     finishSignUp(){
       return this.$router.replace('/profile')

@@ -2,6 +2,14 @@ import { httpClient } from './httpClient';
 const endpoint = '/auth'
 
 /**
+ * Send request for google login
+ * @param {Object} payload - The user's google credentials
+ */
+async function googleSignIn(payload) {
+  return httpClient.post(`${endpoint}/google`, payload);
+}
+
+/**
  * Send request for user login
  * @param {Object} payload - Request data
  * @returns {Promise} - A promise which resolves to the server response
@@ -52,4 +60,5 @@ export default {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  googleSignIn,
 };
