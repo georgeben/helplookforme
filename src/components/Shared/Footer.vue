@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="mt-10">
     <div class="container sm:flex sm:justify-between sm:items-center">
       <div>
         <img class="h-5 px-2 mb-2 sm:mb-0" src="../../assets/images/logo.png" alt="Logo" />

@@ -21,31 +21,9 @@
           <div
             class="social-media-share flex flex-wrap justify-between w-5/6 mx-auto mb-6"
           >
-            <!-- TODO Create separate components for tweet and share buttons -->
-            <a
-              href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-              class="twitter-share-button"
-              :data-text="`Help find ${item.name} ${item.description}`"
-              data-via="helplookforme"
-              data-hashtags="HelpLookForMe"
-              data-show-count="false"
-              data-size="large"
-              >Tweet</a
-            >
+            <TwitterShareButton :text="`Help find ${item.fullname} ${item.description}`" />
 
-            <div
-              class="fb-share-button"
-              data-href="http://helplookfor.me"
-              data-layout="button_count"
-              data-size="large"
-            >
-              <a
-                target="_blank"
-                href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fhelplookfor.me%2F&amp;src=sdkpreparse"
-                class="fb-xfbml-parse-ignore"
-                >Share</a
-              >
-            </div>
+            <FacebookShareButton :url="url" />
           </div>
         </div>
 
@@ -154,12 +132,16 @@
 
 <script>
 import OptionsDropdown from '../components/OptionsDropdown.vue';
+import TwitterShareButton from '@/components/Social/TwitterShareButton.vue';
+import FacebookShareButton from '@/components/Social/FacebookShareButton.vue';
 import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'reported-cases',
   components: {
     OptionsDropdown,
+    TwitterShareButton,
+    FacebookShareButton,
   },
   async created(){
     // Fetch the latest cases
@@ -170,7 +152,11 @@ export default {
     };
   },
   computed: {
-    ...mapState('User', ['userCases'])
+    ...mapState('User', ['userCases']),
+    url(){
+      let currentURL = window.location.href;
+      return encodeURI(currentURL);
+    }
   },
   methods: {
     ...mapActions('User', ['getUserCases']),

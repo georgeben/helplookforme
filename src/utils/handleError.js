@@ -5,6 +5,9 @@ export default function (error) {
   if (process.env.NODE_ENV !== 'production') {
     console.log(error);
   }
+  if (!error.response) {
+    return toast.error('Something wen\'t wrong, please try again later')
+  }
   switch (error.response.status) {
     case 401:
       // Quietly log the user out and send the user to the login screen

@@ -37,7 +37,7 @@
     <section
       class="featured-cases"
     >
-      <div class="container scrolling-wrapper p-8 bg-light-green">
+      <div class="container scrolling-wrapper p-8 bg-light-green" v-if="featuredCases.length >= 3">
         <CaseCard
           v-for="featuredCase in featuredCases"
           :key="featuredCase.slug"
