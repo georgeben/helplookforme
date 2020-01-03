@@ -18,31 +18,9 @@
             <div
               class="social-media-share flex flex-wrap justify-between w-5/6 mx-auto mb-6"
             >
-            <!-- TODO Use custom styling for share buttons, loading them from their servers take too much time -->
-              <a
-                href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-                class="twitter-share-button"
-                :data-text="`Help find ${caseData.name} ${caseData.description}`"
-                data-via="helplookforme"
-                data-hashtags="HelpLookForMe"
-                data-show-count="false"
-                data-size="large"
-                >Tweet</a
-              >
+              <TwitterShareButton :text="`Help find ${caseData.fullname} ${caseData.description}`" />
 
-              <div
-                class="fb-share-button"
-                data-href="http://helplookfor.me"
-                data-layout="button_count"
-                data-size="large"
-              >
-                <a
-                  target="_blank"
-                  href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fhelplookfor.me%2F&amp;src=sdkpreparse"
-                  class="fb-xfbml-parse-ignore"
-                  >Share</a
-                >
-              </div>
+              <FacebookShareButton :url="url" />
             </div>
           </div>
 
@@ -165,6 +143,8 @@
 
 <script>
 import CaseCard from '@/components/CaseCard.vue';
+import TwitterShareButton from '@/components/Social/TwitterShareButton.vue';
+import FacebookShareButton from '@/components/Social/FacebookShareButton.vue';
 import { handleError } from '../utils'
 import { mapGetters } from 'vuex';
 import { caseEndpoint } from '../api'
@@ -172,6 +152,8 @@ export default {
   name: 'view-case',
   components: {
     CaseCard,
+    TwitterShareButton,
+    FacebookShareButton,
   },
   async created(){
     // Check if the case is in the store, If it isn't fetch it from the API
@@ -196,6 +178,10 @@ export default {
   },
   computed: {
     ...mapGetters('Case', ['getCaseBySlug']),
+    url(){
+      let currentURL = window.location.href;
+      return encodeURI(currentURL);
+    }
   },
   data() {
     return {
