@@ -1,10 +1,10 @@
 import * as yup from 'yup';
 
 export default yup.object().shape({
-  password: yup
+  message: yup
     .string()
-    .required('Please enter your password')
-    .min(4, 'Password must be at least 4 characters'),
+    .required('Please enter a message')
+    .min(70, 'Your message must be at least 70 characters long'),
   email: yup
     .string()
     .email('Please enter a valid email')
@@ -12,6 +12,6 @@ export default yup.object().shape({
   fullname: yup
     .string()
     .trim()
-    .min(2)
+    .min(2, 'Fullname must have at least two characters')
     .required('Please enter your fullname'),
 });

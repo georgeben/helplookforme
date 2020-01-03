@@ -10,6 +10,7 @@ import ViewCases from '../views/ViewCase'
 import UserProfile from '../views/UserProfile'
 import ReportedCases from '../views/ReportedCases'
 import EditCase from '../views/EditCase';
+import ContactUs from '../views/ContactUs';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 import ForgotPassword from '@/components/Auth/ForgotPassword.vue';
@@ -120,6 +121,11 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: ContactUs,
+  }
 ];
 
 const router = new VueRouter({

@@ -5,6 +5,7 @@ import caseSchema from './caseSchema'
 import updatePasswordSchema from './updatePassword'
 import checkEmailSchema from './checkEmail'
 import newsletterSchema from './newsletterSchema'
+import contactUsSchema from './contactUsSchema'
 export {
   loginSchema,
   signUpSchema,
@@ -13,4 +14,5 @@ export {
   updatePasswordSchema,
   checkEmailSchema,
   newsletterSchema,
+  contactUsSchema,
 };

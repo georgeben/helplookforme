@@ -25,12 +25,12 @@
           </div>
         </div>
         <div class="text-sm mt-2 md:flex" :class="isMobileNavOpen ? '': 'hidden'">
-          <router-link to="/" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Home</router-link>
-          <a href="/search" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Search</a>
-          <a href="/report-case" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">Report Case</a>
-          <a href="/profile" class="block p-2 rounded-sm hover:bg-light-green md:ml-3">My profile</a>
-          <a href="/reported-cases" class="block p-2 rounded-sm hover:bg-light-green md:ml-3" v-if="isLoggedIn">My Reported cases</a>
-          <a href="#" class="block p-2 rounded-sm text-red-500 hover:text-red-400 md:ml-3" v-if="isLoggedIn" @click="logUserOut">Log out</a>
+          <a href="/search" class="block p-2 rounded-sm hover:bg-light-green md:ml-2">Search</a>
+          <a href="/contact" class="block p-2 rounded-sm hover:bg-light-green md:ml-2">Contact</a>
+          <a href="/report-case" class="block p-2 rounded-sm hover:bg-light-green md:ml-2">Report case</a>
+          <a href="/profile" class="block p-2 rounded-sm hover:bg-light-green md:ml-2">My profile</a>
+          <a href="/reported-cases" class="block p-2 rounded-sm hover:bg-light-green md:ml-2" v-if="isLoggedIn">My Reported cases</a>
+          <a href="#" class="block p-2 rounded-sm text-red-500 hover:text-red-400 md:ml-2" v-if="isLoggedIn" @click="logUserOut">Log out</a>
 
         </div>
       </div>
