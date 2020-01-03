@@ -80,6 +80,7 @@ const actions = {
         // No more data, stop fetching
         commit('setFetchMoreCases', false);
       }
+      return cases;
     } catch (error) {
       return handleError(error);
     }

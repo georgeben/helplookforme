@@ -35,7 +35,7 @@ async function updateCase(slug, payload) {
  * @param {Number} limit - The maximum number of documents to retrieve
  */
 async function getCases(offset, limit) {
-  return httpClient.get(`${endpoint}?offset=${offset}&limit=${limit}`);
+  return httpClient.get(`${endpoint}?${offset? `offset=${offset}`: ''}${limit? `&limit=${limit}`: ''}`);
 }
 
 /**
