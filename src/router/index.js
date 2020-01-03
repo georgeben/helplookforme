@@ -11,6 +11,7 @@ import UserProfile from '../views/UserProfile'
 import ReportedCases from '../views/ReportedCases'
 import EditCase from '../views/EditCase';
 import ContactUs from '../views/ContactUs';
+import PageNoFound from '../views/PageNoFound';
 import Login from '@/components/Auth/Login.vue'
 import Signup from '@/components/Auth/SignUp.vue'
 import ForgotPassword from '@/components/Auth/ForgotPassword.vue';
@@ -96,6 +97,13 @@ const routes = [
     path: '/cases/:slug',
     name: 'view-case',
     component: ViewCases,
+    beforeEnter: (to, from, next) => {
+      const slugPattern = /^[a-z]+(?:-([a-z]+|[0-9]{4}|([a-z]+[0-9]{4})))*$/;
+      if (slugPattern.test(to.params.slug)) {
+        return next();
+      }
+      return next({name: 'not-found'})
+    }
   },
   {
     path: '/profile',
@@ -117,6 +125,13 @@ const routes = [
     path: '/edit/:caseSlug',
     name: 'edit-case',
     component: EditCase,
+    beforeEnter: (to, from, next) => {
+      const slugPattern = /^[a-z]+(?:-([a-z]+|[0-9]{4}|([a-z]+[0-9]{4})))*$/;
+      if (slugPattern.test(to.params.caseSlug)) {
+        return next();
+      }
+      return next({name: 'not-found'})
+    },
     meta: {
       requiresAuth: true,
     },
@@ -125,7 +140,12 @@ const routes = [
     path: '/contact',
     name: 'contact',
     component: ContactUs,
-  }
+  },
+  {
+    path: '*',
+    name: 'not-found',
+    component: PageNoFound,
+  },
 ];
 
 const router = new VueRouter({

@@ -1,5 +1,5 @@
 <template>
-  <CaseForm :edit="true" 
+  <CaseForm v-if="authorized" :edit="true" 
     :initialPersonalInformation="personalInformation"
     :initialPhysicalCharacteristics="physicalInformation"
     :initialEventDescription="eventDescription"
@@ -10,7 +10,8 @@
 <script>
 import CaseForm from '@/components/Forms/Case/CaseForm.vue';
 import { caseEndpoint } from '../api'
-import { handleError } from '../utils'
+import { handleError } from '../utils';
+import { mapState } from 'vuex'
 
 export default {
   name: 'edit-case',
@@ -19,6 +20,7 @@ export default {
   },
   data() {
     return {
+      authorized: false,
       personalInformation: {
         fullname: '',
         nicknames: '',
@@ -66,6 +68,10 @@ export default {
     try {
       let result = await caseEndpoint.getCase(caseSlug);
       let caseData = result.data.data.case;
+      if(caseData.reportedBy !== this.currentUser._id){
+        return this.$router.replace({name: 'not-found'});
+      }
+      this.authorized = true;
       const dataFields = ['personalInformation', 'physicalInformation', 'eventDescription', 'photo']
        // Set the data properties
        for(let field of dataFields){
@@ -97,6 +103,9 @@ export default {
     } catch (error) {
       return handleError(error)
     }
+  },
+  computed: {
+    ...mapState('Auth', ['currentUser'])
   }
 };
 </script>

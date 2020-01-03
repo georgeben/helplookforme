@@ -13,10 +13,15 @@ export default function (error) {
       if (router.currentRoute.path === '/auth/login') {
         return;
       }
-      router.replace('/auth/login')
+      router.replace('/auth/login');
       break;
     case 404:
-      return toast.error(error.response.data.error || 'Something wen\'t wrong. The resource you are requesting for isn\'t found')
+      toast.error(
+        error.response.data.error ||
+          "Something wen't wrong. The resource you are requesting for isn't found",
+      );
+      return router.push({ name: 'not-found' });
+
     default:
       toast.error(error.response.data.error);
       return;
