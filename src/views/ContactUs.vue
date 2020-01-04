@@ -68,6 +68,11 @@ export default {
     }
   },
   methods: {
+    resetState(){
+      this.fullname = '';
+      this.email = '';
+      this.message = '';
+    },
     async sendMessage(){
       this.fieldWithError = '';
       this.errorMessage = '';
@@ -83,8 +88,10 @@ export default {
           email: this.email,
           message: this.message
         });
-        
-        toast.success('Thanks for your message!')
+        this.loading = true;
+        toast.success('Thanks for your message!');
+        this.loading = false;
+        this.resetState();
 
       } catch (error) {
         if(error.name === "ValidationError"){

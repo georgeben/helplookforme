@@ -24,7 +24,8 @@ export default function (error) {
           "Something wen't wrong. The resource you are requesting for isn't found",
       );
       return router.push({ name: 'not-found' });
-
+    case 500:
+      return toast.error('Something bad happened. Please try again later');
     default:
       toast.error(error.response.data.error);
       return;
