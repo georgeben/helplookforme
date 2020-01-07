@@ -184,7 +184,7 @@ router.beforeEach((to, from, next) => {
   // Check that a user's profile is complete before allowing them create a case
   if (loggedIn && to.matched.some(record => record.meta.complete)) {
     if (!user.completedProfile) {
-      next({
+      return next({
         path: '/profile'
       });
     }
