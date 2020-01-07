@@ -62,6 +62,8 @@
 <script>
 import algoliasearch from 'algoliasearch/lite';
 import CaseCard from '@/components/CaseCard.vue';
+import config from '../config';
+const { indexName } = config;
 export default {
   name: 'search',
   components: {
@@ -73,16 +75,17 @@ export default {
         'ISSCK6BK8M',
         '4ecb3f61e231bb412bbe9e8da10de8d8',
       ),
+      indexName,
     };
   },
   computed: {
-    indexName() {
+    /* indexName() {
       let index =
         process.env.NODE_ENV === 'production'
           ? process.env.INDEX_NAME
           : 'dev_CASES';
       return index;
-    },
+    }, */
   },
 };
 </script>
