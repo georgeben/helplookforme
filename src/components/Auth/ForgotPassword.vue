@@ -37,7 +37,7 @@
 
 <script>
 import { authEndpoint } from '../../api';
-import { handleError } from '../../utils';
+import { handleError, toast } from '../../utils';
 import SubmitButton from '../Forms/SubmitButton.vue';
 import * as yup from 'yup';
 export default {
@@ -76,6 +76,9 @@ export default {
           return;
         }
         this.loading = false;
+        if(error.response && error.response.status === 404){
+          return toast.error('Sorry that email is not registered');
+        }
         return handleError(error);
       }
     }

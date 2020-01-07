@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { storage } from '../utils/';
 import constants from '../constants';
+import config from '../config';
+let { baseURL } = config;
 
 let authInterceptorID;
 
-const baseURL =
+/* const baseURL =
   process.env.NODE_ENV === 'production'
     ? process.env.VUE_APP_API_BASE_URL
-    : process.env.VUE_APP_DEV_API_BASE_URL;
+    : process.env.VUE_APP_DEV_API_BASE_URL; */
 
 const httpClient = axios.create({
   baseURL,
