@@ -47,8 +47,8 @@ export default {
       })
       auth2.attachClickHandler(this.$refs.googleSignIn, {}, googleUser => {
         this.$emit('done', googleUser)
+      // eslint-disable-next-line no-unused-vars
       }, error => {
-        console.log(error);
         toast.error('Something went wrong');
         })
     })

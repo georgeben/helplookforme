@@ -41,7 +41,6 @@ export default {
     loginWithFacebook() {
       // eslint-disable-next-line no-undef
       FB.login((response) => {
-        console.log({response});
         this.$emit('done', response)
       }, {scope: 'public_profile,email'});
     },

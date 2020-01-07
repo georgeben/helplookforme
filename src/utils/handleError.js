@@ -3,7 +3,7 @@ import router from '../router';
 import toast from './toast';
 export default function (error) {
   if (process.env.NODE_ENV !== 'production') {
-    console.log(error);
+    // console.log(error);
   }
   if (!error.response) {
     return toast.error('Something wen\'t wrong, please try again later')
