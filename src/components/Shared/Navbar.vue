@@ -30,7 +30,7 @@
           <router-link to="/report-case" class="block p-2 rounded-sm hover:bg-light-green md:ml-2">Report case</router-link>
           <router-link to="/profile" class="block p-2 rounded-sm hover:bg-light-green md:ml-2">My profile</router-link>
           <router-link to="/reported-cases" class="block p-2 rounded-sm hover:bg-light-green md:ml-2" v-if="isLoggedIn">My Reported cases</router-link>
-          <router-link to="#" class="block p-2 rounded-sm text-red-500 hover:text-red-400 md:ml-2" v-if="isLoggedIn" @click="logUserOut">Log out</router-link>
+          <p class="block p-2 rounded-sm text-red-500 hover:text-red-400 md:ml-2 cursor-pointer" v-if="isLoggedIn" @click="logUserOut">Log out</p>
 
         </div>
       </div>
