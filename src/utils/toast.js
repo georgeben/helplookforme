@@ -3,14 +3,14 @@ export default {
   error(message) {
     Vue.toasted.show(message, {
       position: 'bottom-center',
-      duration: 2000,
+      duration: 3000,
       type: 'error',
     });
   },
   success(message) {
     Vue.toasted.show(message, {
       position: 'bottom-center',
-      duration: 2000,
+      duration: 3000,
       type: 'success',
     });
   }
