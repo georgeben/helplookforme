@@ -13,7 +13,6 @@
           :key="item.slug"
           :caseData="item"
           page="browse"
-          data-aos="zoom-in-up"
         />
       </div>
 

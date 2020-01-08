@@ -10,8 +10,6 @@ import constants from './constants'
 import { storage } from './utils'
 import './assets/css/tailwind.css'
 import '../node_modules/nprogress/nprogress.css';
-import 'aos/dist/aos.css';
-import AOS from 'aos';
 
 Vue.config.productionTip = false
 Vue.use(Toasted);
@@ -29,8 +27,5 @@ if (loggedIn && token) {
 new Vue({
   router,
   store,
-  created() {
-    AOS.init({once: true})
-  },
   render: h => h(App)
 }).$mount('#app')
