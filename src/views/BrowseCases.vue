@@ -13,7 +13,7 @@
           :key="item.slug"
           :caseData="item"
           page="browse"
-          data-aos="fade-up"
+          data-aos="zoom-in-up"
         />
       </div>
 
