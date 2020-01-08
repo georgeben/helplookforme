@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white overflow-hidden shadow-lg md:w-30 mt-5 inline-block" 
+  <div class="bg-white shadow-lg md:w-30 mt-5 inline-block" 
   :class="[page === 'browse' ? 'w-full sm:w-47 sm:mx-2 mx-0 md:mx-2': page === 'suggestion'? 'w-full mx-0 md:w-full': page === 'search' ? 'w-full md:w-full sm:w-full sm:w-47 sm:mx-2 mx-0 md:mx-2': 'w-3/4 mx-5']">
     <div class="pb-2/3 relative">
       <img

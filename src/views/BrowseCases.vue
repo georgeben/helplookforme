@@ -72,10 +72,8 @@ export default {
   async created() {
     // Fetch cases
     await this.getCases({ offset: this.offset, limit: this.limit });
-    console.log('Fetched cases', this.cases)
   },
   mounted(){
-    console.log('Fetched cases', this.cases)
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy(){
