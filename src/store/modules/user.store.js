@@ -20,8 +20,15 @@ const mutations = {
    */
   setUserCases(state, payload) {
     state.userCases = payload;
+  },
+
+  resetState(state) {
+    const newState = initialState();
+    Object.keys(newState).forEach(key => {
+      state[key] = newState[key];
+    });
   }
-}
+};
 
 const actions = {
   /**

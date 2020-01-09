@@ -1,6 +1,7 @@
 import { authEndpoint, userEndpoint } from '@/api';
 import { storage, handleError } from '../../utils';
 import constants from '../../constants';
+import store from '../index';
 import { setAuthHeader, removeAuthHeader } from '../../api/httpClient';
 
 
@@ -145,6 +146,9 @@ const actions = {
   },
   async logout({ commit }){
     commit('resetState');
+
+    // Reset state in the user store
+    store.commit('User/resetState');
     
     // Remove token
     removeAuthHeader();
