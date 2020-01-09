@@ -91,6 +91,9 @@ export default {
 </script>
 
 <style>
+ol{
+  padding-inline-start: 0 !important;
+}
 .ais-Hits-list {
   display: flex;
   flex-wrap: wrap;
