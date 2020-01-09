@@ -34,6 +34,13 @@
       </div>
     </section>
 
+    <!-- How it works -->
+    <section class="steps">
+      <div class="container flex justify-between flex-wrap">
+        <Steps v-for="step in steps" :data="step" :key="step.number" />
+      </div>
+    </section>
+
     <section
       class="featured-cases"
     >
@@ -56,6 +63,7 @@
 // @ is an alias to /src
 import Feature from '@/components/Homepage/Feature.vue';
 import Newsletter from '@/components/Homepage/Newsletter.vue';
+import Steps from '@/components/Homepage/Steps.vue';
 import CaseCard from '@/components/CaseCard.vue';
 import { mapActions, mapState } from 'vuex';
 export default {
@@ -70,6 +78,29 @@ export default {
   },
   data() {
     return {
+      steps: [
+        {
+          number: 1,
+          title: 'Report a case',
+          text: 'Create an account and report a case in approximately five minutes.',
+          style: 'background: linear-gradient(270deg, #FF6A3F 7.33%, #FF804F 100%);',
+          img: 'https://res.cloudinary.com/georgeben/image/upload/v1578586432/report_missing_people/assets/report.png'
+        },
+        {
+          number: 2,
+          title: 'Raise social awareness',
+          text: 'Your reported case is automatically posted on our social media platforms to raise awareness.',
+          style: 'background: linear-gradient(270deg, #F9D02B 7.33%, #EDBF04 100%);',
+           img: 'https://res.cloudinary.com/georgeben/image/upload/v1578586504/report_missing_people/assets/sm.png'
+        },
+        {
+          number: 3,
+          title: 'Information dispersion',
+          text: 'The reported case is broadcasted to all our subscribers that live within a 100km radius from the location the person got missing.',
+          style: 'background: linear-gradient(270deg, #0166F8 7.33%, #2D81FA 100%);',
+           img: 'https://res.cloudinary.com/georgeben/image/upload/v1578587075/report_missing_people/assets/send.png'
+        }
+      ],
       features: [
         {
           title: 'Reach a wider audience',
@@ -100,13 +131,14 @@ export default {
     Feature,
     CaseCard,
     Newsletter,
+    Steps,
   },
 };
 </script>
 
 <style scoped>
 section {
-  padding: 50px 0;
+  padding: 35px 0;
 }
 .jumbotron {
   background-image: url('../assets/images/landing_images/landing.png');
