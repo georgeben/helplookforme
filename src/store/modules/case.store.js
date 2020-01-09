@@ -82,6 +82,7 @@ const actions = {
       }
       return cases;
     } catch (error) {
+      commit('setFetchMoreCases', false);
       return handleError(error);
     }
   },

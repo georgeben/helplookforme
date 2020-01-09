@@ -70,7 +70,10 @@ export default {
   },
   async created() {
     // Fetch cases
-    await this.getCases({ offset: this.offset, limit: this.limit });
+    if(navigator.onLine){
+      this.offset = this.cases.length;
+      await this.getCases({ offset: this.offset, limit: this.limit });
+    }
   },
   mounted(){
     window.addEventListener('scroll', this.handleScroll);
@@ -84,7 +87,6 @@ export default {
       if (this.fetchMoreCases) {
         this.busy = true;
         this.offset += 15;
-        this.limit += 15;
         await this.getCases({ offset: this.offset, limit: this.limit });
         this.busy = false;
       }

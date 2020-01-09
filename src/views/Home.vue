@@ -57,10 +57,14 @@
 import Feature from '@/components/Homepage/Feature.vue';
 import Newsletter from '@/components/Homepage/Newsletter.vue';
 import CaseCard from '@/components/CaseCard.vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default {
   name: 'home',
   async created(){
+    if(this.cases.length >= 3){
+      console.log('Not Fetching')
+      return this.featuredCases = this.cases;
+    }
     const cases = await this.getCases({limit: 5});
     this.featuredCases = cases;
   },
@@ -85,6 +89,9 @@ export default {
       ],
       featuredCases: [],
     };
+  },
+  computed: {
+    ...mapState('Case', ['cases']),
   },
   methods: {
     ...mapActions('Case', ['getCases']),
