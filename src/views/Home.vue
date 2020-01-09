@@ -43,14 +43,40 @@
 
     <section
       class="featured-cases"
+      v-if="featuredCases.length >= 3"
     >
-      <div class="container scrolling-wrapper p-8 bg-light-green" v-if="featuredCases.length >= 3">
+      <div class="container scrolling-wrapper p-8 bg-light-green">
         <CaseCard
           v-for="featuredCase in featuredCases"
           :key="featuredCase.slug"
           :caseData="featuredCase"
         />
 
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section>
+      <div class="container bg-teal-100">
+      <div class="py-6 flex justify-between flex-wrap text-gray-100">
+        <div class="stat w-full md:w-1/4 mb-6">
+          <div class=" h-48 w-48 stat-circle p-4 rounded-full text-center flex items-center mx-auto shadow-xl">
+            <p class="stat-text mx-auto"><span class="font-extrabold text-2xl">{{stats.reportedCasesCount}}</span><br> cases reported</p>
+          </div>
+        </div> 
+
+        <div class="stat w-full md:w-1/4 mb-6">
+          <div class=" h-48 w-48 stat-circle rounded-full text-center flex items-center mx-auto shadow-xl">
+            <p class="stat-text mx-auto"><span class="font-extrabold text-2xl">{{stats.subscribersCount}}</span><br> people subscribed</p>
+          </div>
+        </div> 
+
+        <div class="stat w-full md:w-1/4 mb-6">
+          <div class=" h-48 w-48 stat-circle rounded-full text-center flex items-center mx-auto shadow-xl">
+            <p class="stat-text mx-auto"><span class="font-extrabold text-2xl">{{stats.countryCount}}</span><br> countries</p>
+          </div>
+        </div> 
+      </div>
       </div>
     </section>
 
@@ -66,18 +92,31 @@ import Newsletter from '@/components/Homepage/Newsletter.vue';
 import Steps from '@/components/Homepage/Steps.vue';
 import CaseCard from '@/components/CaseCard.vue';
 import { mapActions, mapState } from 'vuex';
+import { stats } from '../api'
+import { handleError } from '../utils'
 export default {
   name: 'home',
   async created(){
-    if(this.cases.length >= 0){
-      console.log('Not Fetching')
-      return this.featuredCases = this.cases;
+    try {
+      if(this.cases.length >= 0){
+        this.featuredCases = this.cases;
+      } else {
+        const cases = await this.getCases({limit: 5});
+        this.featuredCases = cases;
+      }
+      const result = await stats.getStats();
+      this.stats = result.data.data;
+    } catch (error) {
+      return handleError(error);
     }
-    const cases = await this.getCases({limit: 5});
-    this.featuredCases = cases;
   },
   data() {
     return {
+      stats: {
+        reportedCasesCount: 0,
+        subscribersCount: 0,
+        countryCount: 0
+      },
       steps: [
         {
           number: 1,
@@ -137,6 +176,10 @@ export default {
 </script>
 
 <style scoped>
+.stat-circle{
+  background: linear-gradient(97.06deg, rgba(89, 215, 182, 0.9) 28.21%, rgba(102, 195, 204, 0.9) 96.06%);
+}
+
 section {
   padding: 35px 0;
 }
