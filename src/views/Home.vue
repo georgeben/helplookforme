@@ -61,7 +61,7 @@ import { mapActions, mapState } from 'vuex';
 export default {
   name: 'home',
   async created(){
-    if(this.cases.length >= 3){
+    if(this.cases.length >= 0){
       console.log('Not Fetching')
       return this.featuredCases = this.cases;
     }
