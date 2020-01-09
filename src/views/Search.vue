@@ -94,6 +94,9 @@ export default {
 ol{
   padding-inline-start: 0 !important;
 }
+ul{
+  padding-inline-start: 0 !important;
+}
 .ais-Hits-list {
   display: flex;
   flex-wrap: wrap;
