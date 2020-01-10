@@ -35,10 +35,10 @@
               <div class="mb-6">
                 <p class=" text-lg leading-relaxed">Upload photo</p>
                 <p class="text-gray-600 text-sm">
-                  Upload a clear photo of the missing person clearly showing their face. Avoid photos with special filters
+                  Upload a clear photo of the missing person clearly showing their face. Photos without a face will be rejected Avoid photos with special filters.
                 </p>
               </div>
-              <ImagePicker v-model="photo" />
+              <ImagePicker v-model="photo" @load="disableSubmit=true" @done="disableSubmit=false"/>
 
             </div>
 
@@ -70,7 +70,7 @@
               Next
             </button>
     
-            <SubmitButton v-if="formNumber === 4" class="ml-auto" text="Submit report" @click.native="submitForm" :loading="loading"/>
+            <SubmitButton v-if="formNumber === 4" class="ml-auto" text="Submit report" @click.native="submitForm" :loading="loading" :disabled="disableSubmit"/>
           </div>
         </div>
       </div>
@@ -134,6 +134,7 @@ export default {
       errorMessage: '',
       loading: false,
       recaptchaToken: '',
+      disableSubmit: false,
     };
   },
   methods: {
@@ -195,11 +196,10 @@ export default {
       this.errorMessage = '';
       // Check if there was an image
       if(!this.photo.photoURL) return this.errorMessage = 'Please select an image';
-
-      // TODO Check if the image contains a face
+      if(!this.photo.valid) return toast.error('We couldn\'t find a face in the photo you selected, please select a better one');
 
       if(!this.recaptchaToken){
-        return toast.error('Please confirm that you are not a robot 😉');
+        return toast.error('Please confirm that you are not a robot.');
       }
 
       this.loading = true;
