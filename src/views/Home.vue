@@ -98,8 +98,9 @@ export default {
   name: 'home',
   async created(){
     try {
-      if(this.cases.length >= 0){
-        this.featuredCases = this.cases;
+      if(this.cases.length > 0){
+        // Don't fetch
+        this.featuredCases = this.cases.slice(0,6);
       } else {
         const cases = await this.getCases({limit: 5});
         this.featuredCases = cases;
