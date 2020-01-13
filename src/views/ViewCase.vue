@@ -127,7 +127,7 @@
           </div>
         </div>
 
-        <div class="related-cases mt-6 sm:mt-0 sm:w-30 sm:flex sm:flex-wrap">
+        <div class="related-cases mt-6 sm:mt-0 sm:w-30 sm:flex sm:flex-wrap" v-if="relatedCases.length > 0">
           <h3 class="font-bold text-lg sm:text-base">View other cases</h3>
           <CaseCard
             v-for="item in relatedCases"
