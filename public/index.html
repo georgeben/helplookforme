@@ -5,13 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>client</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <title>Report cases of missing people</title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but client doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCxExDtVmUoKn1B18Vs0ULNKq0qu6hmsM&libraries=places"></script>
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <script>
+      window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '430025197616958',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v5.0'
+      });
+    };
+    </script>
   </body>
 </html>
