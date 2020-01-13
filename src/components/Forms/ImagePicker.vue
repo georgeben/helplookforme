@@ -5,7 +5,7 @@
       <img
         ref="image"
         class=" h-56 object-cover block mx-auto"
-        :src="photo.photoURL? photo.photoURL: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg'"
+        :src="photo.photoURL? photo.photoURL: 'https://res.cloudinary.com/georgeben/image/upload/v1578906476/report_missing_people/assets/image_placeholder.jpg'"
       />
       <div class="overlay h-24 mt-10 mx-auto flex justify-center flex-wrap" v-if="loading" ref="overlay">
         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
