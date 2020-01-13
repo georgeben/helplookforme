@@ -2,7 +2,7 @@
   <section class="bg-gray-100 pt-10">
     <div class="container">
       <div class="mt-10 sm:flex sm:justify-between sm:items-start">
-        <div class="case bg-white shadow-lg p-4 sm:w-4/6 lg:flex">
+        <div class="case bg-white shadow-lg p-4 lg:flex" :class="relatedCases.length <= 0 ? 'sm:w-4/5 mx-auto':'sm:w-4/6'">
           <div class="lg:w-1/2 lg:mr-4">
             <div class="case-photo">
               <h1 class="text-xl md:text-xl font-semibold mb-4">{{ caseData.fullname }}</h1>
