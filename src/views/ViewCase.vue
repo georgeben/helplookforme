@@ -161,16 +161,15 @@ export default {
     // Fetch case from API
     try {
       let caseData = this.getCaseBySlug(caseSlug);
+      // Get related cases
+      const response = await caseEndpoint.getRelatedCases(caseSlug);
+      this.relatedCases = response.data.data.cases;
       if(caseData){
         this.caseData = caseData
       } else {
         let result = await caseEndpoint.getCase(caseSlug);
         this.caseData = result.data.data.case;
       }
-
-      // Get related cases
-      const response = await caseEndpoint.getRelatedCases(caseSlug);
-      this.relatedCases = response.data.data.cases;
       
     } catch (error) {
       return handleError(error);
