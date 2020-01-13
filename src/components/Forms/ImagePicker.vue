@@ -7,9 +7,9 @@
         class=" h-56 object-cover block mx-auto"
         :src="photo.photoURL? photo.photoURL: 'https://p7.hiclipart.com/preview/419/473/131/computer-icons-user-profile-login-user.jpg'"
       />
-      <div class="overlay w-1/4 mx-auto flex justify-center flex-wrap" v-if="loading" ref="overlay">
+      <div class="overlay h-24 mt-10 mx-auto flex justify-center flex-wrap" v-if="loading" ref="overlay">
         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-        <p class="text-sm text-dark w-full">Detecting image...</p>
+        <p class="text-sm text-dark w-full">Detecting face...</p>
       </div>
     </div>
     <input type="file" class="hidden" accept="image/*" ref="imageInput" @change="onFilePicked">

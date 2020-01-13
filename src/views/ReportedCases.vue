@@ -12,7 +12,7 @@
               <OptionsDropdown class="lg:hidden" :slug="item.slug" />
             </div>
             <img
-              class="h-48 w-4/5 object-contain mb-4"
+              class="h-48 w-4/5 object-contain mb-4 block mx-auto"
               :src="item.photoURL"
               alt="Missing person photo"
             />
