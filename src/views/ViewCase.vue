@@ -2,7 +2,7 @@
   <section class="bg-gray-100 pt-10">
     <div class="container">
       <div class="mt-10 sm:flex sm:justify-between sm:items-start">
-        <div class="case bg-white shadow-lg p-4 sm:w-4/6 lg:flex">
+        <div class="case bg-white shadow-lg p-4 lg:flex" :class="relatedCases.length <= 0 ? 'sm:w-4/5 mx-auto':'sm:w-4/6'">
           <div class="lg:w-1/2 lg:mr-4">
             <div class="case-photo">
               <h1 class="text-xl md:text-xl font-semibold mb-4">{{ caseData.fullname }}</h1>
@@ -127,7 +127,7 @@
           </div>
         </div>
 
-        <div class="related-cases mt-6 sm:mt-0 sm:w-30 sm:flex sm:flex-wrap">
+        <div class="related-cases mt-6 sm:mt-0 sm:w-30 sm:flex sm:flex-wrap" v-if="relatedCases.length > 0">
           <h3 class="font-bold text-lg sm:text-base">View other cases</h3>
           <CaseCard
             v-for="item in relatedCases"
@@ -161,16 +161,15 @@ export default {
     // Fetch case from API
     try {
       let caseData = this.getCaseBySlug(caseSlug);
+      // Get related cases
+      const response = await caseEndpoint.getRelatedCases(caseSlug);
+      this.relatedCases = response.data.data.cases;
       if(caseData){
         this.caseData = caseData
       } else {
         let result = await caseEndpoint.getCase(caseSlug);
         this.caseData = result.data.data.case;
       }
-
-      // Get related cases
-      const response = await caseEndpoint.getRelatedCases(caseSlug);
-      this.relatedCases = response.data.data.cases;
       
     } catch (error) {
       return handleError(error);

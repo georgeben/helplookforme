@@ -2,6 +2,9 @@
   <section class="w-full bg-gray-100">
     <div class="container mt-20">
       <ais-instant-search :search-client="searchClient" :index-name="indexName">
+        <ais-configure
+          :filters="'solved: false'"
+         />
         <ais-search-box>
           <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
             <form class="search-form mb-4 py-4 md:w-3/4 md:mx-auto">
@@ -48,11 +51,18 @@
           </div>
         </ais-search-box>
         <ais-stats />
-        <ais-hits>
-          <div slot="item" slot-scope="{ item }" class="hits">
-            <CaseCard :key="item.slug" :caseData="item" page="search" />
-          </div>
-        </ais-hits>
+        <ais-state-results>
+          <template slot-scope="{ hits }">
+            <ais-hits v-if="hits.length > 0">
+              <div slot="item" slot-scope="{ item }" class="hits">
+                <CaseCard :key="item.slug" :caseData="item" page="search" />
+              </div>
+            </ais-hits>
+            <div v-else>
+              <h1 class="text-center text-xl mt-8 mb-16"> No results were found.</h1>
+            </div>
+          </template>
+        </ais-state-results>
         <ais-pagination />
       </ais-instant-search>
     </div>
@@ -79,13 +89,6 @@ export default {
     };
   },
   computed: {
-    /* indexName() {
-      let index =
-        process.env.NODE_ENV === 'production'
-          ? process.env.INDEX_NAME
-          : 'dev_CASES';
-      return index;
-    }, */
   },
 };
 </script>
