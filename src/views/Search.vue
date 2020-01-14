@@ -2,6 +2,9 @@
   <section class="w-full bg-gray-100">
     <div class="container mt-20">
       <ais-instant-search :search-client="searchClient" :index-name="indexName">
+        <ais-configure
+          :filters="'solved: false'"
+         />
         <ais-search-box>
           <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
             <form class="search-form mb-4 py-4 md:w-3/4 md:mx-auto">
