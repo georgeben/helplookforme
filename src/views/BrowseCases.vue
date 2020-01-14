@@ -7,6 +7,7 @@
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="busy"
         infinite-scroll-distance="10"
+        v-if="cases.length > 0"
       >
         <CaseCard
           v-for="item in cases"
@@ -14,6 +15,10 @@
           :caseData="item"
           page="browse"
         />
+      </div>
+
+      <div v-else class=" h-screen flex items-center justify-center">
+        <h1 class="text-center text-xl mt-8 mb-16"> No cases have been reported yet 😇.</h1>
       </div>
 
       <div v-if="showFAB">
