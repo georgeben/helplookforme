@@ -1,3 +1,6 @@
+/**
+ * Creates a Clarifai client used for Face detection
+ */
 import Clarifai from 'clarifai';
 
 

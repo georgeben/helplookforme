@@ -1,3 +1,7 @@
+/**
+ * Exports environment specific configuration for app
+ */
+
 function config() {
   switch (process.env.VUE_APP_APP_ENV) {
     case 'staging':

@@ -52,7 +52,7 @@ const actions = {
   },
 
   /**
-   * 
+   * Updates the status of a case
    * @param {Object} context - The vuex store instance 
    * @param {Object} data - Request data
    */
@@ -66,7 +66,7 @@ const actions = {
   },
 
   /**
-   *
+   * Retrieves a list of all cases that have been reported 
    * @param {Object} param0 - The Vuex store instance
    * @param {Object} payload - Object containing the offset and limit of the cases to fetch
    */
@@ -89,6 +89,9 @@ const actions = {
 };
 
 const getters = {
+  /**
+   * Retrieves a case from the state by the case slug
+   */
   getCaseBySlug: (state) => (slug) => {
     return state.cases.find(item => item.slug === slug)
   }
