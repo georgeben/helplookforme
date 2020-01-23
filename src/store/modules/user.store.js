@@ -22,6 +22,9 @@ const mutations = {
     state.userCases = payload;
   },
 
+  /**
+   * Resets the state
+   */
   resetState(state) {
     const newState = initialState();
     Object.keys(newState).forEach(key => {
@@ -65,8 +68,8 @@ const actions = {
 
   /**
    * Updates a user's password
-   * @param {Object} context 
-   * @param {Object} payload 
+   * @param {Object} context
+   * @param {Object} payload
    */
   async updateUserPassword(context, payload) {
     try {
@@ -77,6 +80,10 @@ const actions = {
     }
   },
 
+  /**
+   * Updates a users email
+   * @param {Object} payload - Object containing the new email
+   */
   // eslint-disable-next-line no-unused-vars
   async updateUserEmail({ commit }, payload) {
     try {
@@ -93,7 +100,7 @@ const actions = {
     } catch (error) {
       return handleError(error);
     }
-  }
+  },
 };
 
 const getters = {

@@ -35,7 +35,6 @@
           
           </div>
 
-          <!-- Use a location suggest box -->
           <div class="mb-3">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
