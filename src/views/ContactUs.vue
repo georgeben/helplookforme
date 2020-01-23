@@ -5,7 +5,7 @@
         <div>
           <h1 class="text-center text-xl font-semibold pb-6 mx-auto">Contact Us</h1>
           <p class="text-gray-600 text-justify w-11/12 mx-auto">
-            Want to get in touch? Send a message, we would love to hear from you.😄
+            Want to get in touch? Send a message, we would love to hear from you.😄 Emails are sent via <a href="https://sendgrid.com">SendGrid</a>
           </p>
         </div>
 
