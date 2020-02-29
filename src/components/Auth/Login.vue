@@ -78,8 +78,8 @@ export default {
       }
       this.$router.replace(this.$route.query.redirect)
     },
-    async loginWithGoogle(user){
-      const result = await this.googleSignIn(user.Zi.id_token)
+    async loginWithGoogle(id_token){
+      const result = await this.googleSignIn(id_token)
       if(result){
         this.signInSuccess();
       }
