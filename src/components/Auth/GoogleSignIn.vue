@@ -46,7 +46,8 @@ export default {
         cookiepolicy: 'single_host_origin'
       })
       auth2.attachClickHandler(this.$refs.googleSignIn, {}, googleUser => {
-        this.$emit('done', googleUser)
+        const id_token = googleUser.getAuthResponse().id_token;
+        this.$emit('done', id_token)
       // eslint-disable-next-line no-unused-vars
       }, error => {
         toast.error('Something went wrong');
