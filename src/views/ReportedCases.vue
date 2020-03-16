@@ -56,7 +56,7 @@
               {{ item.gender }}
             </span>
           </p>
-          <p>
+          <p v-if="item.age">
             <span class="text-gray-700 text-sm">Age: </span>
             <span class="font-semibold">
               {{ item.age }}
@@ -68,7 +68,7 @@
               {{ item.addressLastSeen.formatted_address }}
             </span>
           </p>
-          <p>
+          <p v-if="item.residentialAddress">
             <span class="text-gray-700 text-sm">
               Residential address:
             </span>
@@ -88,7 +88,7 @@
             </span>
             <span class="font-semibold"> {{ item.physicalInformation.weight }}kg </span>
           </p>
-          <p>
+          <p v-if="item.language">
             <span class="text-gray-700 text-sm">
               Primary language:
             </span>

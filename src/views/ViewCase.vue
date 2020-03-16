@@ -53,7 +53,7 @@
                 {{ caseData.gender }}
               </span>
             </p>
-            <p>
+            <p v-if="caseData.age">
               <span class="text-gray-700 text-sm">Age: </span>
               <span class="font-semibold">
                 {{ caseData.age }}
@@ -65,7 +65,7 @@
                 {{ caseData.addressLastSeen.formatted_address }}
               </span>
             </p>
-            <p>
+            <p v-if="caseData.residentialAddress">
               <span class="text-gray-700 text-sm">
                 Residential address:
               </span>
@@ -85,7 +85,7 @@
               </span>
               <span class="font-semibold"> {{ caseData.weight }}kg </span>
             </p>
-            <p>
+            <p v-if="caseData.language">
               <span class="text-gray-700 text-sm">
                 Primary language:
               </span>
