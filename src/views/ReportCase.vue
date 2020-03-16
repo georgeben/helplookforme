@@ -26,7 +26,7 @@ export default {
           address: '', // The value in the address field
         },
         language: '',
-        age: 0,
+        age: '',
         gender: '',
       },
       physicalInformation: {

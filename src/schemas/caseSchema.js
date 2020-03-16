@@ -15,36 +15,30 @@ const personalInformation = yup.object().shape({
       location: yup.object().shape({
         type: yup
           .string()
-          .trim()
-          .required(),
+          .trim(),
         coordinates: yup
           .array()
-          .of(yup.number())
-          .required(),
+          .of(yup.number()),
       }),
       formatted_address: yup
         .string()
-        .trim()
-        .required('Please enter a valid address'),
+        .trim(),
       country: yup
         .string()
-        .trim()
-        .required('Please enter a valid address'),
+        .trim(),
       state: yup
         .string()
-        .trim()
-        .required('Please enter a valid address'),
-    })
-    .required(),
+        .trim(),
+    }).nullable(true),
   language: yup
     .string()
-    .trim()
-    .required('Please specify a language'),
+    .trim(),
   age: yup
     .number()
     .integer()
     .min(1, 'Please select a valid age')
-    .required(),
+    .transform(emptyStringToNull)
+    .nullable(true),
   gender: yup
     .string()
     .required('Please select a gender')
